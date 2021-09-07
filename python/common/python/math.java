@@ -1,6 +1,6 @@
 package python;
 
-@org.python.Module(__doc__ = "")
+@org.python.Module(__doc__ = "This module provides access to the mathematical functions\ndefined by the C standard.")
 public class math extends org.python.types.Module {
     @org.python.Attribute
     public static org.python.Object __file__ = new org.python.types.Str("python/common/python/math.java");
