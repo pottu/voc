@@ -46,3 +46,14 @@ class MathModuleTests(TranspileTestCase):
             import math
             print(math.ceil("test"))
             """)
+
+    def test_ceil_override(self):
+        self.assertCodeExecution("""
+        import math
+        class Test:
+            number = 3.5
+            def __ceil__(self):
+                return math.ceil(self.number)
+        test = Test()
+        print(math.ceil(test))
+        """)

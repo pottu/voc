@@ -969,6 +969,13 @@ public class Object extends java.lang.RuntimeException implements org.python.Obj
     @org.python.Method(
             __doc__ = ""
     )
+    public org.python.Object __ceil__() {
+        throw new org.python.exceptions.TypeError("must be real number, not '" + this.typeName() + "'");
+    }
+
+    @org.python.Method(
+            __doc__ = ""
+    )
     public org.python.Object __not__() {
         return org.python.types.Bool.getBool(!((org.python.types.Bool) this.__bool__()).value);
     }
