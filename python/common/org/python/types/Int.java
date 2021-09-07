@@ -881,6 +881,13 @@ public class Int extends org.python.types.Object {
     }
 
     @org.python.Method(
+        __doc__ = "ceil(self)"
+    )
+    public org.python.Object __ceil__() {
+        return this;
+    }
+
+    @org.python.Method(
             __doc__ = "~self"
     )
     public org.python.Object __invert__() {
