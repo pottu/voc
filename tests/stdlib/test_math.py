@@ -1,7 +1,4 @@
-import math
-
 from unittest import expectedFailure
-
 from ..utils import TranspileTestCase
 
 
