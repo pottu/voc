@@ -1,40 +1,38 @@
 package python;
+
 import java.lang.Math;
 
-@org.python.Module(
-        __doc__ =
-                "TODO: Write me!"
-)
+@org.python.Module(__doc__ = "This module provides access to the mathematical functions defined by the C standard.\n"+
+"These functions cannot be used with complex numbers; use the functions of the same name from the cmath module if you require support for complex numbers.\n"+
+"The distinction between functions which support complex numbers and those which don’t\n"+
+"is made since most users do not want to learn quite as much mathematics as required to understand complex numbers\n."+ 
+"Receiving an exception instead of a complex result allows earlier detection of the unexpected complex number used as a parameter,\n"+ 
+"so that the programmer can determine how and why it was generated in the first place.")
 public class math extends org.python.types.Module {
     public math() {
         super();
     }
 
-
     @org.python.Attribute
     public static org.python.Object __file__ = new org.python.types.Str("python/common/python/math.java");
-    // @org.python.Attribute
-    // public static org.python.Object __loader__ = org.python.types.NoneType.NONE;
     @org.python.Attribute
     public static org.python.Object __name__ = new org.python.types.Str("math");
-    // @org.python.Attribute
-    // public static org.python.Object __package__ = new org.python.types.Str("");
-    // @org.python.Attribute
-    // public static org.python.Object __spec__ = org.python.types.NoneType.NONE;
+   
 
-    @org.python.Method(
-         __doc__ = "Return the integer square root of the nonnegative integer n. This is the floor of the exact square root of n, or equivalently the greatest integer a such that a² ≤ n.",
-         args = {"n"}
-    )
+    @org.python.Method(__doc__ = "isqrt(n) -> int\n\n"
+            + "Return the integer square root of the nonnegative integer n.\n"
+            + "This is the floor of the exact square root of n\n"
+            + "or equivalently the greatest integer a such that a² ≤ n.", 
+            args = { "n" })
     public static org.python.Object isqrt(org.python.Object n) {
-       if (n instanceof org.python.types.Int) {
-           long n_val = ((org.python.types.Int) n.__int__()).value;
-           if (n_val < 0) {
-             throw new org.python.exceptions.ValueError("math.isqrt only supports nonnegative integers.");
-           }
-           return org.python.types.Int.getInt(((long) Math.floor(Math.sqrt(n_val))));
-       }
-       throw new org.python.exceptions.TypeError("math.isqrt only supports integers.");
+        if (n instanceof org.python.types.Int) {
+            long n_val = ((org.python.types.Int) n.__int__()).value;
+            if (n_val < 0) {
+                throw new org.python.exceptions.ValueError("isqrt() argument must be nonnegative");
+            }
+            return org.python.types.Int.getInt(((long) Math.floor(Math.sqrt(n_val))));
+        }
+        throw new org.python.exceptions.TypeError("'" + n.typeName() + "' object cannot be interpreted as an integer");
     }
 
 }
