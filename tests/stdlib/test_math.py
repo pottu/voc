@@ -11,9 +11,9 @@ class MathModuleTests(TranspileTestCase):
             import math
             print(math.__doc__)
             """)
+
     ############################################################
     # ceil
-
     def test_ceil_float(self):
         self.assertCodeExecution("""
             import math
