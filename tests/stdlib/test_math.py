@@ -42,7 +42,7 @@ class MathModuleTests(TranspileTestCase):
             """)
 
     @expectedFailure
-    def test_isqrt_positve_float(self):
+    def test_isqrt_positive_float(self):
         self.assertCodeExecution("""
             import math
             math.isqrt(5.8)
@@ -51,11 +51,11 @@ class MathModuleTests(TranspileTestCase):
     def test_isqrt_possible_outcomes(self):
         self.assertCodeExecution("""
             import math
-            math.isqrt(5)
-            math.isqrt(16)
-            math.isqrt(0)
-            math.isqrt(1)
-            math.isqrt(20129310)
+            print(math.isqrt(5))
+            print(math.isqrt(16))
+            print(math.isqrt(0))
+            print(math.isqrt(1))
+            print(math.isqrt(20129310))
             try:
                 math.isqrt("hej")
             except Exception as e:
