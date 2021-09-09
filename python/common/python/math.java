@@ -28,5 +28,14 @@ public class math extends org.python.types.Module {
             return org.python.types.Int.getInt(((long) Math.floor(Math.sqrt(n_val))));
         }
         throw new org.python.exceptions.TypeError("'" + n.typeName() + "' object cannot be interpreted as an integer");
+
+    @org.python.Method(__doc__ = "ceil(x) -> number\n\n"
+            + "Return the ceiling of x as an Integral.\n\nThis is the smallest integer >= x.", args = { "x" })
+    public static org.python.Object ceil(org.python.Object x) {
+        try {
+            return x.__ceil__();
+        } catch (org.python.exceptions.AttributeError ae) {
+            throw new org.python.exceptions.TypeError("must be real number, not " + x.typeName());
+        }
     }
 }
