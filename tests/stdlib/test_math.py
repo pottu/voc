@@ -5,6 +5,14 @@ from ..utils import TranspileTestCase
 class MathModuleTests(TranspileTestCase):
 
     #######################################################
+    # __doc__
+    def test_math___doc__(self):
+        self.assertCodeExecution("""
+            import math
+            print(math.__doc__)
+            """)
+
+    #######################################################
     # isqrt
     @expectedFailure
     def test_isqrt_string(self):
