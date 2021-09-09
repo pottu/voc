@@ -610,6 +610,14 @@ public class Float extends org.python.types.Object {
     }
 
     @org.python.Method(
+            __doc__ = "ceil(self)"
+    )
+    public org.python.Object __ceil__() {
+        int result = (int) Math.ceil(this.value);
+        return org.python.types.Int.getInt(result);
+    }
+
+    @org.python.Method(
             __doc__ = "int(self)"
     )
     public org.python.Object __int__() {

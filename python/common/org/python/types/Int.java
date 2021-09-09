@@ -881,6 +881,13 @@ public class Int extends org.python.types.Object {
     }
 
     @org.python.Method(
+            __doc__ = "ceil(self)"
+    )
+    public org.python.Object __ceil__() {
+        return this;
+    }
+
+    @org.python.Method(
             __doc__ = "~self"
     )
     public org.python.Object __invert__() {
@@ -914,8 +921,9 @@ public class Int extends org.python.types.Object {
                 return this;
             } else {
                 long half_pow = 5;
-                for (long i = 1; i < -_ndigits; i++)
+                for (long i = 1; i < -_ndigits; i++) {
                     half_pow *= 10;
+                }
                 long remainder = this.value % (half_pow * 4);
 
                 if (remainder >= half_pow * 3) {
