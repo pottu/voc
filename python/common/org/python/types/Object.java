@@ -970,7 +970,7 @@ public class Object extends java.lang.RuntimeException implements org.python.Obj
             __doc__ = ""
     )
     public org.python.Object __ceil__() {
-        throw new org.python.exceptions.TypeError("must be real number, not '" + this.typeName() + "'");
+        throw new org.python.exceptions.AttributeError(this, "__ceil__");
     }
 
     @org.python.Method(

@@ -57,3 +57,21 @@ class MathModuleTests(TranspileTestCase):
         test = Test()
         print(math.ceil(test))
         """)
+
+    def test_ceil_exception_msg(self):
+        self.assertCodeExecution("""
+        import math
+        try:
+            math.ceil("str")
+        except Exception as e:
+            print(e)
+        """)
+
+    def test_ceil_exception_msg2(self):
+        self.assertCodeExecution("""
+        import math
+        try:
+            ("str").__ceil__()
+        except Exception as e:
+            print(e)
+        """)
