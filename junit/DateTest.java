@@ -1,11 +1,14 @@
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.python.stdlib.datetime.Date;
 
 import java.util.Collections;
-
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class DateTest {
     public org.python.Object[] createArgs(long year, long month, long day) {
@@ -109,5 +112,61 @@ public class DateTest {
     public void testWeekday() {
         Date d = createDate(2021, 9, 14);
         assertEquals(1, ((org.python.types.Int) d.weekday()).value);
+    }
+
+    @Test
+    public void testDateConstructor4argsException() {
+        org.python.types.Int num = org.python.types.Int.getInt(1);
+        org.python.Object[] args = {num, num, num, num};
+        Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> new Date(args, Collections.emptyMap()));
+        assertEquals("function takes at most 3 arguments (4 given)", exception.getMessage());
+    }
+
+    @Test
+    public void testDateConstructor3argsException() {
+        org.python.types.Int num = org.python.types.Int.getInt(1);
+        org.python.Object[] args = {num, num};
+        Map<String, org.python.Object> kwargs = new HashMap<String, org.python.Object>() {{
+            put("year", num);
+        }};
+        Exception exception = assertThrows(org.python.exceptions.SyntaxError.class, () -> new Date(args, kwargs));
+        assertEquals("positional argument follows keyword argument", exception.getMessage());
+    }
+
+    @Test
+    public void testDateConstructor3argsException2() {
+        org.python.types.Int num = org.python.types.Int.getInt(1);
+        org.python.types.Str str = new org.python.types.Str("test");
+        org.python.Object[] args = {num, num, str};
+        Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> new Date(args, Collections.emptyMap()));
+        assertEquals("an integer is required (got type str)", exception.getMessage());
+    }
+
+    @Test
+    public void testDateConstructor2argsException() {
+        org.python.types.Int num = org.python.types.Int.getInt(1);
+        org.python.types.Str str = new org.python.types.Str("test");
+        org.python.Object[] args = {str, num};
+        Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> new Date(args, Collections.emptyMap()));
+        assertEquals("an integer is required (got type str)", exception.getMessage());
+    }
+
+    @Test
+    public void testDateConstructor2argsException2() {
+        org.python.types.Int num = org.python.types.Int.getInt(1);
+        org.python.Object[] args = {num, num};
+        Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> new Date(args, Collections.emptyMap()));
+        assertEquals("function missing required argument 'day' (pos 3)", exception.getMessage());
+    }
+
+    @Test
+    public void testDateConstructor1argsException() {
+        org.python.types.Int num = org.python.types.Int.getInt(1);
+        org.python.Object[] args = {};
+        Map<String, org.python.Object> kwargs = new HashMap<String, org.python.Object>() {{
+            put("month", num);
+        }};
+        Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> new Date(args, kwargs));
+        assertEquals("function missing required argument 'year' (pos 1)", exception.getMessage());
     }
 }
