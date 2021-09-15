@@ -19,7 +19,7 @@ public class Date extends org.python.types.Object {
     @org.python.Attribute
     public static final org.python.Object max = __max__();
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "date(year, month, day) --> date object")
     public Date(org.python.Object[] args, java.util.Map<java.lang.String, org.python.Object> kwargs) {
 
         super();
@@ -163,7 +163,7 @@ public class Date extends org.python.types.Object {
 
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return repr(self).")
     public org.python.types.Str __repr__() {
 
         String year = this.year + "";
@@ -211,7 +211,7 @@ public class Date extends org.python.types.Object {
 
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Current date or datetime:  same as self.__class__.fromtimestamp(time.time()).")
     public static org.python.Object today() {
         java.time.LocalDateTime today = java.time.LocalDateTime.now();
         int y = today.getYear();
@@ -222,7 +222,7 @@ public class Date extends org.python.types.Object {
         return new Date(args, Collections.emptyMap());
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return ctime() style string.")
     public org.python.Object ctime() {
         String[] monthList = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
         double monthNum = ((org.python.types.Int) this.month).value;
@@ -235,7 +235,7 @@ public class Date extends org.python.types.Object {
         return new org.python.types.Str(weekdayStr + " " + monthStr + " " + this.day + " 00:00:00 " + this.year);
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return the day of the week represented by the date.\nMonday == 0 ... Sunday == 6")
     public org.python.Object weekday() {
         double y = ((org.python.types.Int) this.year).value;
         double m = ((org.python.types.Int) this.month).value;
@@ -249,7 +249,7 @@ public class Date extends org.python.types.Object {
         return org.python.types.Int.getInt(convertToPython[day - 1]);
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return self<value.")
     public org.python.Object __lt__(org.python.Object other) {
         if (other instanceof Date) {
             boolean res = this._lessThan((Date) other);
@@ -259,7 +259,7 @@ public class Date extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return self<=value.")
     public org.python.Object __le__(org.python.Object other) {
         if (other instanceof Date) {
             boolean res = this._lessThan((Date) other)
@@ -270,7 +270,7 @@ public class Date extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return self==value.")
     public org.python.Object __eq__(org.python.Object other) {
         if (other instanceof Date) {
             boolean res = this._equals((Date) other);
@@ -280,7 +280,7 @@ public class Date extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return self!=value.")
     public org.python.Object __ne__(org.python.Object other) {
         if (other instanceof Date) {
             boolean res = !(this._equals((Date) other));
@@ -290,7 +290,7 @@ public class Date extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return self>=value.")
     public org.python.Object __ge__(org.python.Object other) {
         if (other instanceof Date) {
             boolean res = !(this._lessThan((Date) other));
@@ -300,7 +300,7 @@ public class Date extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "")
+    @org.python.Method(__doc__ = "Return self>value.")
     public org.python.Object __gt__(org.python.Object other) {
         if (other instanceof Date) {
             boolean res = !(this._lessThan((Date) other))
@@ -333,5 +333,45 @@ public class Date extends org.python.types.Object {
         return y1 < y2
             || (y1 == y2 && m1 < m2)
             || (y1 == y2 && m1 == m2 && d1 < d2);
+    }
+
+    @org.python.Method(__doc__ = "Return string in ISO 8601 format, YYYY-MM-DD.")
+    public org.python.Object isoformat() {
+        long y = ((org.python.types.Int) this.year).value;
+        long m = ((org.python.types.Int) this.month).value;
+        long d = ((org.python.types.Int) this.day).value;
+        String res = String.format("%04d-%02d-%02d", y, m, d);
+        return new org.python.types.Str(res);
+    }
+
+    @org.python.Method(__doc__ = "str -> Construct a date from the output of date.isoformat()")
+    public static org.python.Object fromisoformat(org.python.Object dateString) {
+        if (dateString instanceof org.python.types.Str) {
+            String date = ((org.python.types.Str) dateString).value;
+            if (date.length() == 10
+                    && Character.isDigit(date.charAt(0))
+                    && Character.isDigit(date.charAt(1))
+                    && Character.isDigit(date.charAt(2))
+                    && Character.isDigit(date.charAt(3))
+                    && date.charAt(4) == '-'
+                    && Character.isDigit(date.charAt(5))
+                    && Character.isDigit(date.charAt(6))
+                    && date.charAt(7) == '-'
+                    && Character.isDigit(date.charAt(8))
+                    && Character.isDigit(date.charAt(9))) {
+                long year = Long.parseLong(date.substring(0, 4));
+                long month = Long.parseLong(date.substring(5, 7));
+                long day = Long.parseLong(date.substring(8, 10));
+                org.python.types.Int d = org.python.types.Int.getInt(day);
+                org.python.types.Int m = org.python.types.Int.getInt(month);
+                org.python.types.Int y = org.python.types.Int.getInt(year);
+                org.python.Object[] args = {y, m, d};
+                return new Date(args, Collections.emptyMap());
+            } else {
+                throw new org.python.exceptions.ValueError("Invalid isoformat string: '" + date + "'");
+            }
+        } else {
+            throw new org.python.exceptions.TypeError("descriptor 'isoformat' for 'datetime.date' objects doesn't apply to a '" + dateString.typeName() + "' object");
+        }
     }
 }
