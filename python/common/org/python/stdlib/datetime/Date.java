@@ -248,4 +248,90 @@ public class Date extends org.python.types.Object {
         int[] convertToPython = {6, 0, 1, 2, 3, 4, 5};
         return org.python.types.Int.getInt(convertToPython[day - 1]);
     }
+
+    @org.python.Method(__doc__ = "")
+    public org.python.Object __lt__(org.python.Object other) {
+        if (other instanceof Date) {
+            boolean res = this._lessThan((Date) other);
+            return org.python.types.Bool.getBool(res);
+        } else {
+            return org.python.types.NotImplementedType.NOT_IMPLEMENTED;
+        }
+    }
+
+    @org.python.Method(__doc__ = "")
+    public org.python.Object __le__(org.python.Object other) {
+        if (other instanceof Date) {
+            boolean res = this._lessThan((Date) other)
+                    || this._equals((Date) other);
+            return org.python.types.Bool.getBool(res);
+        } else {
+            return org.python.types.NotImplementedType.NOT_IMPLEMENTED;
+        }
+    }
+
+    @org.python.Method(__doc__ = "")
+    public org.python.Object __eq__(org.python.Object other) {
+        if (other instanceof Date) {
+            boolean res = this._equals((Date) other);
+            return org.python.types.Bool.getBool(res);
+        } else {
+            return org.python.types.NotImplementedType.NOT_IMPLEMENTED;
+        }
+    }
+
+    @org.python.Method(__doc__ = "")
+    public org.python.Object __ne__(org.python.Object other) {
+        if (other instanceof Date) {
+            boolean res = !(this._equals((Date) other));
+            return org.python.types.Bool.getBool(res);
+        } else {
+            return org.python.types.NotImplementedType.NOT_IMPLEMENTED;
+        }
+    }
+
+    @org.python.Method(__doc__ = "")
+    public org.python.Object __ge__(org.python.Object other) {
+        if (other instanceof Date) {
+            boolean res = !(this._lessThan((Date) other));
+            return org.python.types.Bool.getBool(res);
+        } else {
+            return org.python.types.NotImplementedType.NOT_IMPLEMENTED;
+        }
+    }
+
+    @org.python.Method(__doc__ = "")
+    public org.python.Object __gt__(org.python.Object other) {
+        if (other instanceof Date) {
+            boolean res = !(this._lessThan((Date) other))
+                    && !(this._equals((Date) other));
+            return org.python.types.Bool.getBool(res);
+        } else {
+            return org.python.types.NotImplementedType.NOT_IMPLEMENTED;
+        }
+    }
+
+    private boolean _equals(Date other) {
+        long y1 = ((org.python.types.Int) this.year).value;
+        long m1 = ((org.python.types.Int) this.month).value;
+        long d1 = ((org.python.types.Int) this.day).value;
+        long y2 = ((org.python.types.Int) other.year).value;
+        long m2 = ((org.python.types.Int) other.month).value;
+        long d2 = ((org.python.types.Int) other.day).value;
+
+        return y1 == y2 && m1 == m2 && d1 == d2;
+    }
+
+    private boolean _lessThan(Date other) {
+        long y1 = ((org.python.types.Int) this.year).value;
+        long m1 = ((org.python.types.Int) this.month).value;
+        long d1 = ((org.python.types.Int) this.day).value;
+        long y2 = ((org.python.types.Int) other.year).value;
+        long m2 = ((org.python.types.Int) other.month).value;
+        long d2 = ((org.python.types.Int) other.day).value;
+
+        return y1 < y2
+            || (y1 == y2 && m1 < m2)
+            || (y1 == y2 && m1 == m2 && d1 < d2);
+    }
 }
