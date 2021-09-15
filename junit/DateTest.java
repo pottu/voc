@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.python.stdlib.datetime.Date;
 
@@ -137,9 +139,11 @@ public class DateTest {
     public void testDateConstructor3argsException() {
         org.python.types.Int num = org.python.types.Int.getInt(1);
         org.python.Object[] args = {num, num};
-        Map<String, org.python.Object> kwargs = new HashMap<String, org.python.Object>() {{
-            put("year", num);
-        }};
+        Map<String, org.python.Object> kwargs = new HashMap<String, org.python.Object>() {
+            {
+                put("year", num);
+            }
+        };
         Exception exception = assertThrows(org.python.exceptions.SyntaxError.class, () -> new Date(args, kwargs));
         assertEquals("positional argument follows keyword argument", exception.getMessage());
     }
@@ -174,10 +178,78 @@ public class DateTest {
     public void testDateConstructor1argsException() {
         org.python.types.Int num = org.python.types.Int.getInt(1);
         org.python.Object[] args = {};
-        Map<String, org.python.Object> kwargs = new HashMap<String, org.python.Object>() {{
-            put("month", num);
-        }};
+        Map<String, org.python.Object> kwargs = new HashMap<String, org.python.Object>() {
+            {
+                put("month", num);
+            }
+        };
         Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> new Date(args, kwargs));
         assertEquals("function missing required argument 'year' (pos 1)", exception.getMessage());
+    }
+
+    @Test
+    public void testComparisonOperators() {
+        Date d2018_8_1 = createDate(2018, 8, 1);
+        Date d2018_12_31 = createDate(2018, 12, 31);
+        Date d2021_7_21 = createDate(2021, 7, 21);
+        Date d2021_9_14 = createDate(2021, 9, 14);
+        Date d2021_9_15 = createDate(2021, 9, 15);
+        Date d2022_4_28 = createDate(2022, 4, 28);
+
+        Date d2021_9_14_same = createDate(2021, 9, 14);
+
+        // __lt__
+        assertTrue(((org.python.types.Bool) d2021_9_14.__lt__(d2022_4_28)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__lt__(d2021_9_15)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__lt__(d2018_8_1)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__lt__(d2018_12_31)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__lt__(d2021_7_21)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__lt__(d2021_9_14_same)).value);
+        assertEquals(org.python.types.NotImplementedType.NOT_IMPLEMENTED, d2021_9_14.__lt__(org.python.types.Int.getInt(1)));
+
+        // __le__
+        assertTrue(((org.python.types.Bool) d2021_9_14.__le__(d2022_4_28)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__le__(d2021_9_15)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__le__(d2018_8_1)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__le__(d2018_12_31)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__le__(d2021_7_21)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__le__(d2021_9_14_same)).value);
+        assertEquals(org.python.types.NotImplementedType.NOT_IMPLEMENTED, d2021_9_14.__le__(org.python.types.Int.getInt(1)));
+
+        // __eq__
+        assertFalse(((org.python.types.Bool) d2021_9_14.__eq__(d2022_4_28)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__eq__(d2021_9_15)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__eq__(d2018_8_1)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__eq__(d2018_12_31)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__eq__(d2021_7_21)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__eq__(d2021_9_14_same)).value);
+        assertEquals(org.python.types.NotImplementedType.NOT_IMPLEMENTED, d2021_9_14.__eq__(org.python.types.Int.getInt(1)));
+
+        // __ne__
+        assertTrue(((org.python.types.Bool) d2021_9_14.__ne__(d2022_4_28)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__ne__(d2021_9_15)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__ne__(d2018_8_1)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__ne__(d2018_12_31)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__ne__(d2021_7_21)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__ne__(d2021_9_14_same)).value);
+        assertEquals(org.python.types.NotImplementedType.NOT_IMPLEMENTED, d2021_9_14.__ne__(org.python.types.Int.getInt(1)));
+
+        // __ge__
+        assertFalse(((org.python.types.Bool) d2021_9_14.__ge__(d2022_4_28)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__ge__(d2021_9_15)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__ge__(d2018_8_1)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__ge__(d2018_12_31)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__ge__(d2021_7_21)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__ge__(d2021_9_14_same)).value);
+        assertEquals(org.python.types.NotImplementedType.NOT_IMPLEMENTED, d2021_9_14.__ge__(org.python.types.Int.getInt(1)));
+
+        // __gt__
+        assertFalse(((org.python.types.Bool) d2021_9_14.__gt__(d2022_4_28)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__gt__(d2021_9_15)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__gt__(d2018_8_1)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__gt__(d2018_12_31)).value);
+        assertTrue(((org.python.types.Bool) d2021_9_14.__gt__(d2021_7_21)).value);
+        assertFalse(((org.python.types.Bool) d2021_9_14.__gt__(d2021_9_14_same)).value);
+        assertEquals(org.python.types.NotImplementedType.NOT_IMPLEMENTED, d2021_9_14.__gt__(org.python.types.Int.getInt(1)));
     }
 }
