@@ -62,7 +62,7 @@ public class Date extends org.python.types.Object {
                             daysInMonth[1] = 29;
                         }
 
-                        if (!(1d <= ((org.python.types.Int) this.day).value && ((org.python.types.Int) this.day).value <= daysInMonth[(int) ((org.python.types.Int) this.month).value-1])) {
+                        if (!(1d <= ((org.python.types.Int) this.day).value && ((org.python.types.Int) this.day).value <= daysInMonth[(int) ((org.python.types.Int) this.month).value - 1])) {
                             throw new org.python.exceptions.ValueError("day is out of range for month");
                         }
                     } else {
