@@ -116,6 +116,16 @@ public class DateTest {
     }
 
     @Test
+    public void testDateConstructorOutOfRangeException() {
+        org.python.types.Int year = org.python.types.Int.getInt(2010);
+        org.python.types.Int month = org.python.types.Int.getInt(1);
+        org.python.types.Int day = org.python.types.Int.getInt(35);
+        org.python.Object[] args = {year, month, day};
+        Exception exception = assertThrows(org.python.exceptions.ValueError.class, () -> new Date(args, Collections.emptyMap()));
+        assertEquals("day is out of range for month", exception.getMessage());
+    }
+
+    @Test
     public void testDateConstructor4argsException() {
         org.python.types.Int num = org.python.types.Int.getInt(1);
         org.python.Object[] args = {num, num, num, num};

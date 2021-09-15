@@ -57,8 +57,7 @@ public class Date extends org.python.types.Object {
                 if (python.datetime.MINYEAR.value <= ((org.python.types.Int) this.year).value && ((org.python.types.Int) this.year).value <= python.datetime.MAXYEAR.value) {
 
                     if (1d <= ((org.python.types.Int) this.month).value && ((org.python.types.Int) this.month).value <= 12d) {
-                        if (1d <= ((org.python.types.Int) this.day).value && ((org.python.types.Int) this.day).value <= 31d) {
-                        } else {
+                        if (!(1d <= ((org.python.types.Int) this.day).value && ((org.python.types.Int) this.day).value <= 31d)) {
                             throw new org.python.exceptions.ValueError("day is out of range for month");
                         }
                     } else {
@@ -69,13 +68,13 @@ public class Date extends org.python.types.Object {
                 }
             } else {
                 if (!(this.year instanceof org.python.types.Int)) {
-                    throw new org.python.exceptions.TypeError("integer argument expected, got " + this.year.typeName());
+                    throw new org.python.exceptions.TypeError("an integer is required (got type " + this.year.typeName() + ")");
                 }
                 if (!(this.month instanceof org.python.types.Int)) {
-                    throw new org.python.exceptions.TypeError("integer argument expected, got " + this.month.typeName());
+                    throw new org.python.exceptions.TypeError("an integer is required (got type " + this.month.typeName() + ")");
                 }
                 if (!(this.day instanceof org.python.types.Int)) {
-                    throw new org.python.exceptions.TypeError("integer argument expected, got " + this.day.typeName());
+                    throw new org.python.exceptions.TypeError("an integer is required (got type " + this.day.typeName() + ")");
                 }
             }
         }
@@ -105,14 +104,14 @@ public class Date extends org.python.types.Object {
             String d = this.day + "";
 
             if (!y.equals("null") && !(this.year instanceof org.python.types.Int)) {
-                throw new org.python.exceptions.TypeError("intege argument expected, got " + this.year.typeName());
+                throw new org.python.exceptions.TypeError("an integer is required (got type " + this.year.typeName() + ")");
             }
             if (kwargs.get("year") != null && args.length > 0) {
                 throw new org.python.exceptions.SyntaxError("positional argument follows keyword argument");
             }
 
             if (!(this.month instanceof org.python.types.Int) && !m.equals("null")) {
-                throw new org.python.exceptions.TypeError("integer argument expected, got " + this.month.typeName());
+                throw new org.python.exceptions.TypeError("an integer is required (got type " + this.month.typeName() + ")");
             }
 
             if (y.equals("null")) {
@@ -148,7 +147,7 @@ public class Date extends org.python.types.Object {
             String d = this.day + "";
 
             if (!(this.year instanceof org.python.types.Int) && !y.equals("null")) {
-                throw new org.python.exceptions.TypeError("integer argument expected, got " + this.year.typeName());
+                throw new org.python.exceptions.TypeError("an integer is required (got type " + this.year.typeName() + ")");
             }
             if (!y.equals("null")) {
                 throw new org.python.exceptions.TypeError("function missing required argument 'month' (pos 2)");
@@ -196,7 +195,7 @@ public class Date extends org.python.types.Object {
         org.python.types.Int month = org.python.types.Int.getInt(12);
         org.python.types.Int year = org.python.types.Int.getInt(9999);
 
-        org.python.Object[] args = { year, month, day };
+        org.python.Object[] args = {year, month, day};
         return new Date(args, Collections.emptyMap());
     }
 
@@ -207,7 +206,7 @@ public class Date extends org.python.types.Object {
         org.python.types.Int month = org.python.types.Int.getInt(1);
         org.python.types.Int year = org.python.types.Int.getInt(1);
 
-        org.python.Object[] args = { year, month, day };
+        org.python.Object[] args = {year, month, day};
         return new Date(args, Collections.emptyMap());
 
     }
@@ -219,17 +218,17 @@ public class Date extends org.python.types.Object {
         int m = today.getMonthValue();
         int d = today.getDayOfMonth();
 
-        org.python.Object[] args = { org.python.types.Int.getInt(y), org.python.types.Int.getInt(m), org.python.types.Int.getInt(d) };
+        org.python.Object[] args = {org.python.types.Int.getInt(y), org.python.types.Int.getInt(m), org.python.types.Int.getInt(d)};
         return new Date(args, Collections.emptyMap());
     }
 
     @org.python.Method(__doc__ = "")
     public org.python.Object ctime() {
-        String[] monthList = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        String[] monthList = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
         double monthNum = ((org.python.types.Int) this.month).value;
         String monthStr = monthList[(int) monthNum - 1];
 
-        String[] weekdayList = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+        String[] weekdayList = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
         double weekdayNum = ((org.python.types.Int) weekday()).value;
         String weekdayStr = weekdayList[(int) weekdayNum];
 
@@ -246,7 +245,7 @@ public class Date extends org.python.types.Object {
         java.util.Calendar c = java.util.Calendar.getInstance();
         c.setTime(myCalendar);
         int day = c.get(java.util.Calendar.DAY_OF_WEEK);
-        int[] convertToPython = { 6, 0, 1, 2, 3, 4, 5 };
+        int[] convertToPython = {6, 0, 1, 2, 3, 4, 5};
         return org.python.types.Int.getInt(convertToPython[day - 1]);
     }
 }
