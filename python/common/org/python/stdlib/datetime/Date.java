@@ -334,4 +334,44 @@ public class Date extends org.python.types.Object {
             || (y1 == y2 && m1 < m2)
             || (y1 == y2 && m1 == m2 && d1 < d2);
     }
+
+    @org.python.Method(__doc__ = "")
+    public org.python.Object isoformat() {
+        long y = ((org.python.types.Int) this.year).value;
+        long m = ((org.python.types.Int) this.month).value;
+        long d = ((org.python.types.Int) this.day).value;
+        String res = String.format("%04d-%02d-%02d", y, m, d);
+        return new org.python.types.Str(res);
+    }
+
+    @org.python.Method(__doc__ = "")
+    public static org.python.Object fromisoformat(org.python.Object dateString) {
+        if (dateString instanceof org.python.types.Str) {
+            String date = ((org.python.types.Str) dateString).value;
+            if (date.length() == 10
+                    && Character.isDigit(date.charAt(0))
+                    && Character.isDigit(date.charAt(1))
+                    && Character.isDigit(date.charAt(2))
+                    && Character.isDigit(date.charAt(3))
+                    && date.charAt(4) == '-'
+                    && Character.isDigit(date.charAt(5))
+                    && Character.isDigit(date.charAt(6))
+                    && date.charAt(7) == '-'
+                    && Character.isDigit(date.charAt(8))
+                    && Character.isDigit(date.charAt(9))) {
+                long year = Long.parseLong(date.substring(0, 4));
+                long month = Long.parseLong(date.substring(5, 7));
+                long day = Long.parseLong(date.substring(8, 10));
+                org.python.types.Int d = org.python.types.Int.getInt(day);
+                org.python.types.Int m = org.python.types.Int.getInt(month);
+                org.python.types.Int y = org.python.types.Int.getInt(year);
+                org.python.Object[] args = {y, m, d};
+                return new Date(args, Collections.emptyMap());
+            } else {
+                throw new org.python.exceptions.ValueError("Invalid isoformat string: '" + date + "'");
+            }
+        } else {
+            throw new org.python.exceptions.TypeError("descriptor 'isoformat' for 'datetime.date' objects doesn't apply to a '" + dateString.typeName() + "' object");
+        }
+    }
 }

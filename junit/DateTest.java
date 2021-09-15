@@ -252,4 +252,55 @@ public class DateTest {
         assertFalse(((org.python.types.Bool) d2021_9_14.__gt__(d2021_9_14_same)).value);
         assertEquals(org.python.types.NotImplementedType.NOT_IMPLEMENTED, d2021_9_14.__gt__(org.python.types.Int.getInt(1)));
     }
+
+    @Test
+    public void testIsoformat() {
+        Date d1_1_1 = createDate(1, 1, 1);
+        Date d2021_9_15 = createDate(2021, 9, 15);
+        assertEquals("0001-01-01", ((org.python.types.Str) d1_1_1.isoformat()).value);
+        assertEquals("2021-09-15", ((org.python.types.Str) d2021_9_15.isoformat()).value);
+    }
+
+    @Test
+    public void testFromIsoformat() {
+        Date d1_1_1 = createDate(1, 1, 1);
+        org.python.types.Str s1_1_1 = new org.python.types.Str("0001-01-01");
+        Date d2021_9_15 = createDate(2021, 9, 15);
+        org.python.types.Str s2021_9_15 = new org.python.types.Str("2021-09-15");
+        assertTrue(((org.python.types.Bool) d1_1_1.__eq__(Date.fromisoformat(s1_1_1))).value);
+        assertTrue(((org.python.types.Bool) d2021_9_15.__eq__(Date.fromisoformat(s2021_9_15))).value);
+    }
+
+    @Test
+    public void testFromIsoformatBadString() {
+        org.python.types.Str bad1 = new org.python.types.Str("1-1-1");
+        org.python.types.Str bad2 = new org.python.types.Str("20b1-12-01");
+        org.python.types.Str bad3 = new org.python.types.Str("sdfgsaldkuhad");
+        org.python.types.Str bad4 = new org.python.types.Str("viek-eg-xb");
+        org.python.types.Str bad5 = new org.python.types.Str("");
+        org.python.types.Str bad6 = new org.python.types.Str("202\n-12-01");
+        org.python.types.Str bad7 = new org.python.types.Str("-200-12-01");
+        Exception exception = assertThrows(org.python.exceptions.ValueError.class, () -> Date.fromisoformat(bad1));
+        assertEquals("Invalid isoformat string: '" + bad1 + "'", exception.getMessage());
+        exception = assertThrows(org.python.exceptions.ValueError.class, () -> Date.fromisoformat(bad2));
+        assertEquals("Invalid isoformat string: '" + bad2 + "'", exception.getMessage());
+        exception = assertThrows(org.python.exceptions.ValueError.class, () -> Date.fromisoformat(bad3));
+        assertEquals("Invalid isoformat string: '" + bad3 + "'", exception.getMessage());
+        exception = assertThrows(org.python.exceptions.ValueError.class, () -> Date.fromisoformat(bad4));
+        assertEquals("Invalid isoformat string: '" + bad4 + "'", exception.getMessage());
+        exception = assertThrows(org.python.exceptions.ValueError.class, () -> Date.fromisoformat(bad5));
+        assertEquals("Invalid isoformat string: '" + bad5 + "'", exception.getMessage());
+        exception = assertThrows(org.python.exceptions.ValueError.class, () -> Date.fromisoformat(bad6));
+        assertEquals("Invalid isoformat string: '" + bad6 + "'", exception.getMessage());
+        exception = assertThrows(org.python.exceptions.ValueError.class, () -> Date.fromisoformat(bad7));
+        assertEquals("Invalid isoformat string: '" + bad7 + "'", exception.getMessage());
+    }
+
+    @Test
+    public void testIsoformatInverse() {
+        org.python.types.Str s1_2_3 = new org.python.types.Str("0001-02-03");
+        org.python.types.Str s2020_6_12 = new org.python.types.Str("2020-06-12");
+        assertEquals(s1_2_3.value, ((org.python.types.Str) ((Date) Date.fromisoformat(s1_2_3)).isoformat()).value);
+        assertEquals(s2020_6_12.value, ((org.python.types.Str) ((Date) Date.fromisoformat(s2020_6_12)).isoformat()).value);
+    }
 }
