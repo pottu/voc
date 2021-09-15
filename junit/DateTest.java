@@ -85,6 +85,7 @@ public class DateTest {
     public void testMax() {
         Date d = createDate(python.datetime.MAXYEAR.value, 12, 31);
         assertEquals(d, Date.max);
+        //assertTrue(d.__eq__(Date.max));
     }
 
     @Test

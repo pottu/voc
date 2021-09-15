@@ -54,7 +54,7 @@ public class Date extends org.python.types.Object {
             }
 
             if ((this.year instanceof org.python.types.Int) && (this.month instanceof org.python.types.Int) && (this.day instanceof org.python.types.Int)) {
-                if (1 <= ((org.python.types.Int) this.year).value && ((org.python.types.Int) this.year).value <= 999) {
+                if (python.datetime.MINYEAR.value <= ((org.python.types.Int) this.year).value && ((org.python.types.Int) this.year).value <= python.datetime.MAXYEAR.value) {
 
                     if (1d <= ((org.python.types.Int) this.month).value && ((org.python.types.Int) this.month).value <= 12d) {
                         if (1d <= ((org.python.types.Int) this.day).value && ((org.python.types.Int) this.day).value <= 31d) {
@@ -149,7 +149,6 @@ public class Date extends org.python.types.Object {
 
             if (!(this.year instanceof org.python.types.Int) && !y.equals("null")) {
                 throw new org.python.exceptions.TypeError("integer argument expected, got " + this.year.typeName());
-
             }
             if (!y.equals("null")) {
                 throw new org.python.exceptions.TypeError("function missing required argument 'month' (pos 2)");
@@ -169,22 +168,10 @@ public class Date extends org.python.types.Object {
     public org.python.types.Str __repr__() {
 
         String year = this.year + "";
-        while (year.length() < 4)
-            year = "0" + year;
-
         String month = this.month + "";
-        while (month.length() < 2)
-            month = "0" + month;
-
         String day = this.day + "";
-        while (day.length() < 2)
-            day = "0" + day;
 
-        return new org.python.types.Str(year + "-" + month + "-" + day);
-    }
-
-    public static org.python.Object constant_4() {
-        return org.python.types.Int.getInt(4);
+        return new org.python.types.Str("datetime.date(" + year + ", " + month + ", " + day + ")");
     }
 
     @org.python.Method(__doc__ = "")
@@ -238,7 +225,6 @@ public class Date extends org.python.types.Object {
 
     @org.python.Method(__doc__ = "")
     public org.python.Object ctime() {
-
         String[] monthList = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
         double monthNum = ((org.python.types.Int) this.month).value;
         String monthStr = monthList[(int) monthNum - 1];
@@ -247,7 +233,7 @@ public class Date extends org.python.types.Object {
         double weekdayNum = ((org.python.types.Int) weekday()).value;
         String weekdayStr = weekdayList[(int) weekdayNum];
 
-        return new org.python.types.Str(weekdayStr + " " + monthStr + "  " + this.day + " 00:00:00 " + this.year);
+        return new org.python.types.Str(weekdayStr + " " + monthStr + " " + this.day + " 00:00:00 " + this.year);
     }
 
     @org.python.Method(__doc__ = "")
@@ -262,6 +248,5 @@ public class Date extends org.python.types.Object {
         int day = c.get(java.util.Calendar.DAY_OF_WEEK);
         int[] convertToPython = { 6, 0, 1, 2, 3, 4, 5 };
         return org.python.types.Int.getInt(convertToPython[day - 1]);
-
     }
 }
