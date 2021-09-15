@@ -171,7 +171,7 @@ public class DateTimeTest {
 
         org.python.types.Int year1 = org.python.types.Int.getInt(10);
         org.python.types.Int month1 = org.python.types.Int.getInt(10);
-        org.python.types.Int day1 = org.python.types.Int.getInt(20);
+        org.python.types.Int day1 = org.python.types.Int.getInt(10);
         org.python.types.Int hour1 = org.python.types.Int.getInt(10);
         org.python.types.Int minute1 = org.python.types.Int.getInt(10);
         org.python.types.Int second1 = org.python.types.Int.getInt(10);
@@ -209,6 +209,24 @@ public class DateTimeTest {
         DateTime d = new DateTime(args,new HashMap<>());
         assertDoesNotThrow(()->d.weekday());
         assertEquals(2,((Int) d.weekday()).value);
+    }
+    @Test
+    public void Test_ISOWeekday() {
+        org.python.types.Int year = org.python.types.Int.getInt(2021);
+        org.python.types.Int month = org.python.types.Int.getInt(9);
+        org.python.types.Int day = org.python.types.Int.getInt(15);
+        org.python.Object[] args = {year, month,day};
+        DateTime d = new DateTime(args,new HashMap<>());
+        assertDoesNotThrow(()->d.isoweekday());
+        assertEquals(3,((Int) d.isoweekday()).value);
+
+        org.python.types.Int year1 = org.python.types.Int.getInt(2021);
+        org.python.types.Int month1 = org.python.types.Int.getInt(9);
+        org.python.types.Int day1 = org.python.types.Int.getInt(19);
+        org.python.Object[] args1 = {year1, month1,day1};
+        DateTime d1 = new DateTime(args1,new HashMap<>());
+        assertDoesNotThrow(()->d1.isoweekday());
+        assertEquals(7,((Int) d1.isoweekday()).value);
     }
 
 }

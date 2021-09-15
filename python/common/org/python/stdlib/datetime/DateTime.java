@@ -230,4 +230,18 @@ public class DateTime extends org.python.types.Object {
 	return org.python.types.Int.getInt(convertToPython[day - 1]);
 
     }
+    @org.python.Method(__doc__ = "")
+    public org.python.Object isoweekday() {
+        double y = ((org.python.types.Int) this.year).value;
+        double m = ((org.python.types.Int) this.month).value;
+        double d = ((org.python.types.Int) this.day).value;
+
+        java.util.Date myCalendar = new java.util.GregorianCalendar((int) y, (int) m - 1, (int) d).getTime();
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        c.setTime(myCalendar);
+        int day = c.get(java.util.Calendar.DAY_OF_WEEK);
+        int[] convertToPython = { 7,1 ,2, 3, 4,5,6};
+        return org.python.types.Int.getInt(convertToPython[day-1]);
+
+    }
 }
