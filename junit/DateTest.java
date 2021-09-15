@@ -86,14 +86,13 @@ public class DateTest {
     @Test
     public void testMax() {
         Date d = createDate(python.datetime.MAXYEAR.value, 12, 31);
-        assertEquals(d, Date.max);
-        //assertTrue(d.__eq__(Date.max));
+        assertTrue(((org.python.types.Bool) d.__eq__(Date.max)).value);
     }
 
     @Test
     public void testMin() {
         Date d = createDate(python.datetime.MINYEAR.value, 1, 1);
-        assertEquals(d, Date.min);
+        assertTrue(((org.python.types.Bool) d.__eq__(Date.min)).value);
     }
 
     @Test
