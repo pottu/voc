@@ -70,6 +70,20 @@ public class DateTest {
     }
 
     @Test
+    public void testDateConstructorSuccess4() {
+        // Leap year.
+        org.python.Object[] args = {};
+        java.util.Map<java.lang.String, org.python.Object> kwargs = new java.util.HashMap<java.lang.String, org.python.Object>() {
+            {
+                put("year", org.python.types.Int.getInt(2020));
+                put("month", org.python.types.Int.getInt(2));
+                put("day", org.python.types.Int.getInt(29));
+            }
+        };
+        assertDoesNotThrow(() -> new Date(args, kwargs));
+    }
+
+    @Test
     public void test__repr__() {
         Date d = createDate(2021, 9, 14);
         assertEquals("datetime.date(2021, 9, 14)", d.__repr__().value);
@@ -117,10 +131,30 @@ public class DateTest {
     }
 
     @Test
-    public void testDateConstructorOutOfRangeException() {
+    public void testDateConstructorOutOfRangeException1() {
         org.python.types.Int year = org.python.types.Int.getInt(2010);
         org.python.types.Int month = org.python.types.Int.getInt(1);
         org.python.types.Int day = org.python.types.Int.getInt(35);
+        org.python.Object[] args = {year, month, day};
+        Exception exception = assertThrows(org.python.exceptions.ValueError.class, () -> new Date(args, Collections.emptyMap()));
+        assertEquals("day is out of range for month", exception.getMessage());
+    }
+
+    @Test
+    public void testDateConstructorOutOfRangeException2() {
+        org.python.types.Int year = org.python.types.Int.getInt(2021);
+        org.python.types.Int month = org.python.types.Int.getInt(2);
+        org.python.types.Int day = org.python.types.Int.getInt(29);
+        org.python.Object[] args = {year, month, day};
+        Exception exception = assertThrows(org.python.exceptions.ValueError.class, () -> new Date(args, Collections.emptyMap()));
+        assertEquals("day is out of range for month", exception.getMessage());
+    }
+
+    @Test
+    public void testDateConstructorOutOfRangeException3() {
+        org.python.types.Int year = org.python.types.Int.getInt(2021);
+        org.python.types.Int month = org.python.types.Int.getInt(4);
+        org.python.types.Int day = org.python.types.Int.getInt(31);
         org.python.Object[] args = {year, month, day};
         Exception exception = assertThrows(org.python.exceptions.ValueError.class, () -> new Date(args, Collections.emptyMap()));
         assertEquals("day is out of range for month", exception.getMessage());
