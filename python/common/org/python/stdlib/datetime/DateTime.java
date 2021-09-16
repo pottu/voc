@@ -1,6 +1,10 @@
 package org.python.stdlib.datetime;
 
+import org.python.types.Int;
+
 import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 public class DateTime extends org.python.types.Object {
     private final int YEAR_INDEX = 0;
@@ -10,7 +14,8 @@ public class DateTime extends org.python.types.Object {
     private final int MINUTE_INDEX = 4;
     private final int SECOND_INDEX = 5;
     private final int MICROSECOND_INDEX = 6;
-
+    private int[] DAYS_PER_MONTH = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private final int LEAP_YEAR= 29;
     private final int MIN_YEAR = 1;
     private final int MAX_YEAR = 9999;
 
@@ -52,7 +57,6 @@ public class DateTime extends org.python.types.Object {
 
 	for (String key : keys) {
 	    if (kwargs.get(key) != null) {
-
             if(!(kwargs.get(key) instanceof org.python.types.Int))
                 throw new org.python.exceptions.TypeError("an integer is required (got type"+ kwargs.get(key).typeName()+")");
 		    this.timeUnits[keyIndex] = ((org.python.types.Int) kwargs.get(key)).value;
@@ -65,36 +69,39 @@ public class DateTime extends org.python.types.Object {
 		this.timeUnits[keyIndex] = ((org.python.types.Int) args[argIndex]).value;
 		argIndex++;
 	    } else if (keyIndex < 3) {
-		throw new org.python.exceptions.TypeError("Required argument '" + keys[keyIndex] + "' (pos " + (keyIndex + 1) + ") not found");
+		throw new org.python.exceptions.TypeError("function missing required argument '" + keys[keyIndex] + "' (pos " + (keyIndex + 1) + ")");
 	    }
 	    keyIndex++;
 	}
-
+    GregorianCalendar c = new GregorianCalendar();
+    if (c.isLeapYear(this.timeUnits[YEAR_INDEX].intValue())) {
+        DAYS_PER_MONTH[1] = LEAP_YEAR;
+    }
 	if (this.timeUnits[YEAR_INDEX] < MIN_YEAR || this.timeUnits[YEAR_INDEX] > MAX_YEAR) {
-	    throw new org.python.exceptions.ValueError("year " + this.timeUnits[YEAR_INDEX] + "is out of range");
+	    throw new org.python.exceptions.ValueError("year " + this.timeUnits[YEAR_INDEX] + " is out of range");
 	}
 
 	if (this.timeUnits[MONTH_INDEX] < 1 || this.timeUnits[MONTH_INDEX] > 12) {
-	    throw new org.python.exceptions.ValueError("month " + this.timeUnits[MONTH_INDEX] + "is out of range");
+	    throw new org.python.exceptions.ValueError("month must be in 1..12" );
 	}
-	if (this.timeUnits[DAY_INDEX] < 1 || this.timeUnits[DAY_INDEX] > 31) {
-	    throw new org.python.exceptions.ValueError("day " + this.timeUnits[DAY_INDEX] + "is out of range");
-	}
-
-	if (this.timeUnits[HOUR_INDEX] < 0 || this.timeUnits[HOUR_INDEX] > 24) {
-	    throw new org.python.exceptions.ValueError("hour " + this.timeUnits[HOUR_INDEX] + "is out of range");
+	if (this.timeUnits[DAY_INDEX] < 1 || this.timeUnits[DAY_INDEX] > DAYS_PER_MONTH[this.timeUnits[MONTH_INDEX].intValue()-1]) {
+	    throw new org.python.exceptions.ValueError("day is out of range for month");
 	}
 
-	if (this.timeUnits[MINUTE_INDEX] < 0 || this.timeUnits[MINUTE_INDEX] > 60) {
-	    throw new org.python.exceptions.ValueError("minute " + this.timeUnits[MINUTE_INDEX] + "is out of range");
+	if (this.timeUnits[HOUR_INDEX] < 0 || this.timeUnits[HOUR_INDEX] > 23) {
+	    throw new org.python.exceptions.ValueError("hour must be in 0..23");
+	}
+
+	if (this.timeUnits[MINUTE_INDEX] < 0 || this.timeUnits[MINUTE_INDEX] > 59) {
+	    throw new org.python.exceptions.ValueError("minute must be in 0..59");
 	}
 
 	if (this.timeUnits[SECOND_INDEX] < 0 || this.timeUnits[SECOND_INDEX] > 60) {
-	    throw new org.python.exceptions.ValueError("second " + this.timeUnits[SECOND_INDEX] + "is out of range");
+	    throw new org.python.exceptions.ValueError("second must be in 0..59");
 	}
 
 	if (this.timeUnits[MICROSECOND_INDEX] < 0 || this.timeUnits[MICROSECOND_INDEX] >= 1000000) {
-	    throw new org.python.exceptions.ValueError("microsecond " + this.timeUnits[MICROSECOND_INDEX] + "is out of range");
+	    throw new org.python.exceptions.ValueError("microsecond must be in 0..999999    ");
 	}
 
 	this.year = __year__();
@@ -242,6 +249,55 @@ public class DateTime extends org.python.types.Object {
         int day = c.get(java.util.Calendar.DAY_OF_WEEK);
         int[] convertToPython = { 7,1 ,2, 3, 4,5,6};
         return org.python.types.Int.getInt(convertToPython[day-1]);
-
     }
+    @org.python.Method(__doc__ = "")
+    public static org.python.Object fromordinal(org.python.Object ordinal) {
+        long year = 1;
+        long month = 1;
+        long day = 0;
+        long n = ((org.python.types.Int) ordinal).value;
+        long tmp = 1;
+        while (n > 0){
+            if (year % 4 ==0 && !(year % 100 ==0 && year %400 !=0)) {
+                if (tmp == 367) {
+                    year+=1;
+                    month = 1;
+                    day = 1;
+                    tmp = 2;
+                    n-=1;
+                    continue;
+                }
+                if (tmp == 32 ||tmp==61|| tmp == 92 || tmp == 122 || tmp ==153|| tmp == 183 || tmp == 214 || tmp == 245 || tmp==275 ||tmp==306 || tmp==336) {
+                    month +=1;
+                    day=1;
+                }else {
+                    day+=1;
+                }
+
+            } else {
+                if (tmp == 366) {
+                    year+=1;
+                    month = 1;
+                    day = 1;
+                    tmp =2;
+                    n-=1;
+                    continue;
+                }
+                if (tmp == 32 ||tmp==60|| tmp == 91 || tmp == 121 || tmp ==152 || tmp == 182 || tmp == 213 || tmp == 244 || tmp==274 ||tmp==305 || tmp==335 ) {
+                    month+=1;
+                    day=1;
+                } else {
+                    day+=1;
+                }
+            }
+            n-=1;
+            tmp+=1;
+        }
+        org.python.types.Int n_Year= org.python.types.Int.getInt(year);
+        org.python.types.Int n_Month= org.python.types.Int.getInt(month);
+        org.python.types.Int n_Day= org.python.types.Int.getInt(day);
+        org.python.Object[] args = {n_Year,n_Month,n_Day};
+        return new DateTime(args,new HashMap<>());
+    }
+
 }
