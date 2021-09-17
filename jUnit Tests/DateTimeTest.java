@@ -188,17 +188,17 @@ public class DateTimeTest {
     @Test
     public void TestConstructor7(){
         // Want to Success, add all values
-        org.python.types.Int year = org.python.types.Int.getInt(10);
+        org.python.types.Int year = org.python.types.Int.getInt(2020);
         org.python.types.Int month = org.python.types.Int.getInt(10);
-        org.python.types.Int day = org.python.types.Int.getInt(10);
-        org.python.types.Int hour = org.python.types.Int.getInt(10);
+        org.python.types.Int day = org.python.types.Int.getInt(15);
+        org.python.types.Int hour = org.python.types.Int.getInt(20);
         org.python.types.Int minute = org.python.types.Int.getInt(10);
         org.python.types.Int second = org.python.types.Int.getInt(10);
         org.python.types.Int microsecond = org.python.types.Int.getInt(999999);
         org.python.Object[] args = {year, month,day,hour,minute,second,microsecond};
         DateTime d = new DateTime(args,new HashMap<>());
         assertDoesNotThrow(()-> d);
-        assertEquals("0010-10-10 10:10:10.999999",d.__str__().value);
+        assertEquals("2020-10-15 20:10:10.999999",d.__str__().value);
     }
     @Test
     public void TestConstructor8(){

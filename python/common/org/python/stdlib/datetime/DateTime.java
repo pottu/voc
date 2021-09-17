@@ -98,7 +98,7 @@ public class DateTime extends org.python.types.Object {
             throw new org.python.exceptions.ValueError("minute must be in 0..59");
         }
 
-        if (this.timeUnits[SECOND_INDEX] < 0 || this.timeUnits[SECOND_INDEX] > 60) {
+        if (this.timeUnits[SECOND_INDEX] < 0 || this.timeUnits[SECOND_INDEX] > 59) {
             throw new org.python.exceptions.ValueError("second must be in 0..59");
         }
 
@@ -299,6 +299,7 @@ public class DateTime extends org.python.types.Object {
             n -= 1;
             tmp += 1;
         }
+
         org.python.types.Int n_Year = org.python.types.Int.getInt(year);
         org.python.types.Int n_Month = org.python.types.Int.getInt(month);
         org.python.types.Int n_Day = org.python.types.Int.getInt(day);
