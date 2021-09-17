@@ -9,6 +9,7 @@ import org.python.exceptions.SyntaxError;
 import org.python.stdlib.datetime.Date;
 import org.python.stdlib.datetime.DateTime;
 import org.python.types.Int;
+import org.python.types.NotImplementedType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -263,13 +264,13 @@ public class DateTimeTest {
         org.python.types.Int year1 = org.python.types.Int.getInt(10);
         org.python.types.Int month1 = org.python.types.Int.getInt(10);
         org.python.types.Int day1 = org.python.types.Int.getInt(10);
-        org.python.types.Int hour1 = org.python.types.Int.getInt(10);
-        org.python.types.Int minute1 = org.python.types.Int.getInt(10);
-        org.python.types.Int second1 = org.python.types.Int.getInt(10);
+        org.python.types.Int hour1 = org.python.types.Int.getInt(1);
+        org.python.types.Int minute1 = org.python.types.Int.getInt(1);
+        org.python.types.Int second1 = org.python.types.Int.getInt(1);
         org.python.types.Int microsecond1 = org.python.types.Int.getInt(999999);
         org.python.Object[] args1 = {year1, month1,day1,hour1,minute1,second1,microsecond1};
         DateTime d1 = new DateTime(args1,new HashMap<>());
-        assertEquals("0010-10-10 10:10:10.999999",d1.__str__().value);
+        assertEquals("0010-10-10 01:01:01.999999",d1.__str__().value);
     }
 
     /* @Test Does not work ATM, NEED DATE IMPLEMENTATION
@@ -368,6 +369,333 @@ public class DateTimeTest {
         org.python.Object[] args5 = {year5, month5,day5};
         DateTime d5 = new DateTime(args5,new HashMap<>());
         assertEquals(d5.__str__(),DateTime.fromordinal(ordinal5).__str__());
+    }
+    @Test
+    public void Test_Comparisons_LT() {
+        org.python.types.Int year = org.python.types.Int.getInt(4);
+        org.python.types.Int month = org.python.types.Int.getInt(5);
+        org.python.types.Int day = org.python.types.Int.getInt(15);
+        org.python.Object[] args = {year, month,day};
+        DateTime d1 = new DateTime(args,new HashMap<>());
+        DateTime d2 = new DateTime(args,new HashMap<>());
+        assertFalse(d1.__lt__(d2).toBoolean());
+
+        org.python.types.Int year1 = org.python.types.Int.getInt(4);
+        org.python.types.Int month1 = org.python.types.Int.getInt(5);
+        org.python.types.Int day1 = org.python.types.Int.getInt(12);
+        org.python.types.Int year2 = org.python.types.Int.getInt(4);
+        org.python.types.Int month2 = org.python.types.Int.getInt(5);
+        org.python.types.Int day2 = org.python.types.Int.getInt(10);
+        org.python.Object[] args1= {year1,month1,day1};
+        org.python.Object[] args2= {year2,month2,day2};
+        d1 = new DateTime(args1,new HashMap<>());
+        d2 = new DateTime(args2,new HashMap<>());
+        assertFalse(d1.__lt__(d2).toBoolean());
+
+        org.python.types.Int year3 = org.python.types.Int.getInt(4);
+        org.python.types.Int month3 = org.python.types.Int.getInt(5);
+        org.python.types.Int day3 = org.python.types.Int.getInt(12);
+        org.python.types.Int year4 = org.python.types.Int.getInt(4);
+        org.python.types.Int month4 = org.python.types.Int.getInt(5);
+        org.python.types.Int day4 = org.python.types.Int.getInt(30);
+        org.python.Object[] args3= {year3,month3,day3};
+        org.python.Object[] args4= {year4,month4,day4};
+        d1 = new DateTime(args3,new HashMap<>());
+        d2 = new DateTime(args4,new HashMap<>());
+        assertTrue(d1.__lt__(d2).toBoolean());
+
+        org.python.types.Int year5 = org.python.types.Int.getInt(4);
+        org.python.types.Int month5 = org.python.types.Int.getInt(5);
+        org.python.types.Int day5 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour5 = org.python.types.Int.getInt(12);
+        org.python.types.Int min5 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec5 = org.python.types.Int.getInt(10);
+        org.python.types.Int year6 = org.python.types.Int.getInt(4);
+        org.python.types.Int month6 = org.python.types.Int.getInt(5);
+        org.python.types.Int day6 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour6 = org.python.types.Int.getInt(12);
+        org.python.types.Int min6 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec6 = org.python.types.Int.getInt(12);
+        org.python.Object[] args5= {year5,month5,day5,hour5,min5,sec5};
+        org.python.Object[] args6= {year6,month6,day6,hour6,min6,sec6};
+        d1 = new DateTime(args5,new HashMap<>());
+        d2 = new DateTime(args6,new HashMap<>());
+        assertTrue(d1.__lt__(d2).toBoolean());
+    }
+    @Test
+    public void Test_Comparisons_LE() {
+        org.python.types.Int year = org.python.types.Int.getInt(4);
+        org.python.types.Int month = org.python.types.Int.getInt(5);
+        org.python.types.Int day = org.python.types.Int.getInt(15);
+        org.python.Object[] args = {year, month,day};
+        DateTime d1 = new DateTime(args,new HashMap<>());
+        DateTime d2 = new DateTime(args,new HashMap<>());
+        assertTrue(d1.__le__(d2).toBoolean());
+
+        org.python.types.Int year1 = org.python.types.Int.getInt(4);
+        org.python.types.Int month1 = org.python.types.Int.getInt(5);
+        org.python.types.Int day1 = org.python.types.Int.getInt(12);
+        org.python.types.Int year2 = org.python.types.Int.getInt(4);
+        org.python.types.Int month2 = org.python.types.Int.getInt(5);
+        org.python.types.Int day2 = org.python.types.Int.getInt(10);
+        org.python.Object[] args1= {year1,month1,day1};
+        org.python.Object[] args2= {year2,month2,day2};
+        d1 = new DateTime(args1,new HashMap<>());
+        d2 = new DateTime(args2,new HashMap<>());
+        assertFalse(d1.__le__(d2).toBoolean());
+
+        org.python.types.Int year3 = org.python.types.Int.getInt(4);
+        org.python.types.Int month3 = org.python.types.Int.getInt(5);
+        org.python.types.Int day3 = org.python.types.Int.getInt(12);
+        org.python.types.Int year4 = org.python.types.Int.getInt(4);
+        org.python.types.Int month4 = org.python.types.Int.getInt(5);
+        org.python.types.Int day4 = org.python.types.Int.getInt(30);
+        org.python.Object[] args3= {year3,month3,day3};
+        org.python.Object[] args4= {year4,month4,day4};
+        d1 = new DateTime(args3,new HashMap<>());
+        d2 = new DateTime(args4,new HashMap<>());
+        assertTrue(d1.__le__(d2).toBoolean());
+
+        org.python.types.Int year5 = org.python.types.Int.getInt(4);
+        org.python.types.Int month5 = org.python.types.Int.getInt(5);
+        org.python.types.Int day5 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour5 = org.python.types.Int.getInt(12);
+        org.python.types.Int min5 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec5 = org.python.types.Int.getInt(12);
+        org.python.types.Int year6 = org.python.types.Int.getInt(4);
+        org.python.types.Int month6 = org.python.types.Int.getInt(5);
+        org.python.types.Int day6 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour6 = org.python.types.Int.getInt(12);
+        org.python.types.Int min6 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec6 = org.python.types.Int.getInt(12);
+        org.python.Object[] args5= {year5,month5,day5,hour5,min5,sec5};
+        org.python.Object[] args6= {year6,month6,day6,hour6,min6,sec6};
+        d1 = new DateTime(args5,new HashMap<>());
+        d2 = new DateTime(args6,new HashMap<>());
+        assertTrue(d1.__le__(d2).toBoolean());
+    }
+    @Test
+    public void Test_Comparisons_EQ() {
+        org.python.types.Int year = org.python.types.Int.getInt(4);
+        org.python.types.Int month = org.python.types.Int.getInt(5);
+        org.python.types.Int day = org.python.types.Int.getInt(15);
+        org.python.Object[] args = {year, month,day};
+        DateTime d1 = new DateTime(args,new HashMap<>());
+        DateTime d2 = new DateTime(args,new HashMap<>());
+        assertTrue(d1.__eq__(d2).toBoolean());
+
+        org.python.types.Int year1 = org.python.types.Int.getInt(4);
+        org.python.types.Int month1 = org.python.types.Int.getInt(5);
+        org.python.types.Int day1 = org.python.types.Int.getInt(12);
+        org.python.types.Int year2 = org.python.types.Int.getInt(4);
+        org.python.types.Int month2 = org.python.types.Int.getInt(5);
+        org.python.types.Int day2 = org.python.types.Int.getInt(10);
+        org.python.Object[] args1= {year1,month1,day1};
+        org.python.Object[] args2= {year2,month2,day2};
+        d1 = new DateTime(args1,new HashMap<>());
+        d2 = new DateTime(args2,new HashMap<>());
+        assertFalse(d1.__eq__(d2).toBoolean());
+
+        org.python.types.Int year3 = org.python.types.Int.getInt(4);
+        org.python.types.Int month3 = org.python.types.Int.getInt(5);
+        org.python.types.Int day3 = org.python.types.Int.getInt(12);
+        org.python.types.Int year4 = org.python.types.Int.getInt(4);
+        org.python.types.Int month4 = org.python.types.Int.getInt(5);
+        org.python.types.Int day4 = org.python.types.Int.getInt(30);
+        org.python.Object[] args3= {year3,month3,day3};
+        org.python.Object[] args4= {year4,month4,day4};
+        d1 = new DateTime(args3,new HashMap<>());
+        d2 = new DateTime(args4,new HashMap<>());
+        assertFalse(d1.__eq__(d2).toBoolean());
+
+        org.python.types.Int year5 = org.python.types.Int.getInt(4);
+        org.python.types.Int month5 = org.python.types.Int.getInt(5);
+        org.python.types.Int day5 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour5 = org.python.types.Int.getInt(12);
+        org.python.types.Int min5 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec5 = org.python.types.Int.getInt(12);
+        org.python.types.Int year6 = org.python.types.Int.getInt(4);
+        org.python.types.Int month6 = org.python.types.Int.getInt(5);
+        org.python.types.Int day6 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour6 = org.python.types.Int.getInt(12);
+        org.python.types.Int min6 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec6 = org.python.types.Int.getInt(12);
+        org.python.Object[] args5= {year5,month5,day5,hour5,min5,sec5};
+        org.python.Object[] args6= {year6,month6,day6,hour6,min6,sec6};
+        d1 = new DateTime(args5,new HashMap<>());
+        d2 = new DateTime(args6,new HashMap<>());
+        assertTrue(d1.__eq__(d2).toBoolean());
+    }
+    @Test
+    public void Test_Comparisons_NE() {
+        org.python.types.Int year = org.python.types.Int.getInt(4);
+        org.python.types.Int month = org.python.types.Int.getInt(5);
+        org.python.types.Int day = org.python.types.Int.getInt(15);
+        org.python.Object[] args = {year, month,day};
+        DateTime d1 = new DateTime(args,new HashMap<>());
+        DateTime d2 = new DateTime(args,new HashMap<>());
+        assertFalse(d1.__ne__(d2).toBoolean());
+
+        org.python.types.Int year1 = org.python.types.Int.getInt(4);
+        org.python.types.Int month1 = org.python.types.Int.getInt(5);
+        org.python.types.Int day1 = org.python.types.Int.getInt(12);
+        org.python.types.Int year2 = org.python.types.Int.getInt(4);
+        org.python.types.Int month2 = org.python.types.Int.getInt(5);
+        org.python.types.Int day2 = org.python.types.Int.getInt(10);
+        org.python.Object[] args1= {year1,month1,day1};
+        org.python.Object[] args2= {year2,month2,day2};
+        d1 = new DateTime(args1,new HashMap<>());
+        d2 = new DateTime(args2,new HashMap<>());
+        assertTrue(d1.__ne__(d2).toBoolean());
+
+        org.python.types.Int year3 = org.python.types.Int.getInt(4);
+        org.python.types.Int month3 = org.python.types.Int.getInt(5);
+        org.python.types.Int day3 = org.python.types.Int.getInt(12);
+        org.python.types.Int year4 = org.python.types.Int.getInt(4);
+        org.python.types.Int month4 = org.python.types.Int.getInt(5);
+        org.python.types.Int day4 = org.python.types.Int.getInt(30);
+        org.python.Object[] args3= {year3,month3,day3};
+        org.python.Object[] args4= {year4,month4,day4};
+        d1 = new DateTime(args3,new HashMap<>());
+        d2 = new DateTime(args4,new HashMap<>());
+        assertTrue(d1.__ne__(d2).toBoolean());
+
+        org.python.types.Int year5 = org.python.types.Int.getInt(4);
+        org.python.types.Int month5 = org.python.types.Int.getInt(5);
+        org.python.types.Int day5 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour5 = org.python.types.Int.getInt(12);
+        org.python.types.Int min5 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec5 = org.python.types.Int.getInt(12);
+        org.python.types.Int year6 = org.python.types.Int.getInt(4);
+        org.python.types.Int month6 = org.python.types.Int.getInt(5);
+        org.python.types.Int day6 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour6 = org.python.types.Int.getInt(12);
+        org.python.types.Int min6 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec6 = org.python.types.Int.getInt(12);
+        org.python.Object[] args5= {year5,month5,day5,hour5,min5,sec5};
+        org.python.Object[] args6= {year6,month6,day6,hour6,min6,sec6};
+        d1 = new DateTime(args5,new HashMap<>());
+        d2 = new DateTime(args6,new HashMap<>());
+        assertFalse(d1.__ne__(d2).toBoolean());
+    }
+    @Test
+    public void Test_Comparisons_GE() {
+        org.python.types.Int year = org.python.types.Int.getInt(4);
+        org.python.types.Int month = org.python.types.Int.getInt(5);
+        org.python.types.Int day = org.python.types.Int.getInt(15);
+        org.python.Object[] args = {year, month,day};
+        DateTime d1 = new DateTime(args,new HashMap<>());
+        DateTime d2 = new DateTime(args,new HashMap<>());
+        assertTrue(d1.__ge__(d2).toBoolean());
+
+        org.python.types.Int year1 = org.python.types.Int.getInt(4);
+        org.python.types.Int month1 = org.python.types.Int.getInt(5);
+        org.python.types.Int day1 = org.python.types.Int.getInt(12);
+        org.python.types.Int year2 = org.python.types.Int.getInt(4);
+        org.python.types.Int month2 = org.python.types.Int.getInt(5);
+        org.python.types.Int day2 = org.python.types.Int.getInt(10);
+        org.python.Object[] args1= {year1,month1,day1};
+        org.python.Object[] args2= {year2,month2,day2};
+        d1 = new DateTime(args1,new HashMap<>());
+        d2 = new DateTime(args2,new HashMap<>());
+        assertTrue(d1.__ge__(d2).toBoolean());
+
+        org.python.types.Int year3 = org.python.types.Int.getInt(4);
+        org.python.types.Int month3 = org.python.types.Int.getInt(5);
+        org.python.types.Int day3 = org.python.types.Int.getInt(12);
+        org.python.types.Int year4 = org.python.types.Int.getInt(4);
+        org.python.types.Int month4 = org.python.types.Int.getInt(5);
+        org.python.types.Int day4 = org.python.types.Int.getInt(30);
+        org.python.Object[] args3= {year3,month3,day3};
+        org.python.Object[] args4= {year4,month4,day4};
+        d1 = new DateTime(args3,new HashMap<>());
+        d2 = new DateTime(args4,new HashMap<>());
+        assertFalse(d1.__ge__(d2).toBoolean());
+
+        org.python.types.Int year5 = org.python.types.Int.getInt(4);
+        org.python.types.Int month5 = org.python.types.Int.getInt(5);
+        org.python.types.Int day5 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour5 = org.python.types.Int.getInt(12);
+        org.python.types.Int min5 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec5 = org.python.types.Int.getInt(15);
+        org.python.types.Int year6 = org.python.types.Int.getInt(4);
+        org.python.types.Int month6 = org.python.types.Int.getInt(5);
+        org.python.types.Int day6 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour6 = org.python.types.Int.getInt(12);
+        org.python.types.Int min6 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec6 = org.python.types.Int.getInt(12);
+        org.python.Object[] args5= {year5,month5,day5,hour5,min5,sec5};
+        org.python.Object[] args6= {year6,month6,day6,hour6,min6,sec6};
+        d1 = new DateTime(args5,new HashMap<>());
+        d2 = new DateTime(args6,new HashMap<>());
+        assertTrue(d1.__ge__(d2).toBoolean());
+    }
+    @Test
+    public void Test_Comparisons_GT() {
+        org.python.types.Int year = org.python.types.Int.getInt(4);
+        org.python.types.Int month = org.python.types.Int.getInt(5);
+        org.python.types.Int day = org.python.types.Int.getInt(15);
+        org.python.Object[] args = {year, month,day};
+        DateTime d1 = new DateTime(args,new HashMap<>());
+        DateTime d2 = new DateTime(args,new HashMap<>());
+        assertFalse(d1.__gt__(d2).toBoolean());
+
+        org.python.types.Int year1 = org.python.types.Int.getInt(4);
+        org.python.types.Int month1 = org.python.types.Int.getInt(5);
+        org.python.types.Int day1 = org.python.types.Int.getInt(12);
+        org.python.types.Int year2 = org.python.types.Int.getInt(4);
+        org.python.types.Int month2 = org.python.types.Int.getInt(5);
+        org.python.types.Int day2 = org.python.types.Int.getInt(10);
+        org.python.Object[] args1= {year1,month1,day1};
+        org.python.Object[] args2= {year2,month2,day2};
+        d1 = new DateTime(args1,new HashMap<>());
+        d2 = new DateTime(args2,new HashMap<>());
+        assertTrue(d1.__gt__(d2).toBoolean());
+
+        org.python.types.Int year3 = org.python.types.Int.getInt(4);
+        org.python.types.Int month3 = org.python.types.Int.getInt(5);
+        org.python.types.Int day3 = org.python.types.Int.getInt(12);
+        org.python.types.Int year4 = org.python.types.Int.getInt(4);
+        org.python.types.Int month4 = org.python.types.Int.getInt(5);
+        org.python.types.Int day4 = org.python.types.Int.getInt(30);
+        org.python.Object[] args3= {year3,month3,day3};
+        org.python.Object[] args4= {year4,month4,day4};
+        d1 = new DateTime(args3,new HashMap<>());
+        d2 = new DateTime(args4,new HashMap<>());
+        assertFalse(d1.__gt__(d2).toBoolean());
+
+        org.python.types.Int year5 = org.python.types.Int.getInt(4);
+        org.python.types.Int month5 = org.python.types.Int.getInt(5);
+        org.python.types.Int day5 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour5 = org.python.types.Int.getInt(12);
+        org.python.types.Int min5 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec5 = org.python.types.Int.getInt(12);
+        org.python.types.Int year6 = org.python.types.Int.getInt(4);
+        org.python.types.Int month6 = org.python.types.Int.getInt(5);
+        org.python.types.Int day6 = org.python.types.Int.getInt(12);
+        org.python.types.Int hour6 = org.python.types.Int.getInt(12);
+        org.python.types.Int min6 = org.python.types.Int.getInt(12);
+        org.python.types.Int sec6 = org.python.types.Int.getInt(12);
+        org.python.Object[] args5= {year5,month5,day5,hour5,min5,sec5};
+        org.python.Object[] args6= {year6,month6,day6,hour6,min6,sec6};
+        d1 = new DateTime(args5,new HashMap<>());
+        d2 = new DateTime(args6,new HashMap<>());
+        assertFalse(d1.__gt__(d2).toBoolean());
+    }
+    @Test
+    public void Test_Comparisons_Invalid_Type() {
+        org.python.types.Int year = org.python.types.Int.getInt(4);
+        org.python.types.Int month = org.python.types.Int.getInt(5);
+        org.python.types.Int day = org.python.types.Int.getInt(15);
+        org.python.Object[] args = {year, month,day};
+        DateTime d1 = new DateTime(args,new HashMap<>());
+        org.python.types.Int d2 = org.python.types.Int.getInt(5);
+        assertEquals(NotImplementedType.NOT_IMPLEMENTED,d1.__lt__(d2));
+        assertEquals(NotImplementedType.NOT_IMPLEMENTED,d1.__le__(d2));
+        assertEquals(NotImplementedType.NOT_IMPLEMENTED,d1.__eq__(d2));
+        assertEquals(NotImplementedType.NOT_IMPLEMENTED,d1.__ne__(d2));
+        assertEquals(NotImplementedType.NOT_IMPLEMENTED,d1.__ge__(d2));
+        assertEquals(NotImplementedType.NOT_IMPLEMENTED,d1.__gt__(d2));
     }
 
 }
