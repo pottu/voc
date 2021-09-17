@@ -74,7 +74,7 @@ public class DateTimeTest {
         org.python.types.Int month1 = org.python.types.Int.getInt(10);
         org.python.types.Int day1= org.python.types.Int.getInt(25);
         org.python.Object[] args1 = {month1, day1};
-        Map<String, Object> kwargs= new HashMap<>() {
+        Map<String, Object> kwargs= new HashMap<String,org.python.Object>() {
             {
                 put("year", org.python.types.Int.getInt(10));
             }
