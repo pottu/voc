@@ -369,6 +369,20 @@ public class DateTimeTest {
         org.python.Object[] args5 = {year5, month5,day5};
         DateTime d5 = new DateTime(args5,new HashMap<>());
         assertEquals(d5.__str__(),DateTime.fromordinal(ordinal5).__str__());
+
+        org.python.types.Int ordinal6 = org.python.types.Int.getInt(-3);
+        assertThrows(ValueError.class,()-> DateTime.fromordinal(ordinal6).__str__());
+
+        org.python.types.Int ordinal7 = org.python.types.Int.getInt(3652060);
+        assertThrows(ValueError.class,()-> DateTime.fromordinal(ordinal7).__str__());
+
+        org.python.types.Str ordinal8 = new org.python.types.Str("hej");
+        assertThrows(ClassCastException.class,()-> DateTime.fromordinal(ordinal8).__str__());
+    }
+    @Test
+    public void Test_fromordinal_ex(){
+        org.python.types.Str ordinal8 = new org.python.types.Str("hej");
+        assertThrows(ClassCastException.class,()-> DateTime.fromordinal(ordinal8).__str__());
     }
     @Test
     public void Test_Comparisons_LT() {
