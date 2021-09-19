@@ -1,5 +1,9 @@
 package org.python.stdlib.datetime;
 
+import org.python.exceptions.TypeError;
+import org.python.exceptions.ValueError;
+import org.python.types.Int;
+
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -258,53 +262,66 @@ public class DateTime extends org.python.types.Object {
 
     @org.python.Method(__doc__ = "Return the datetime corresponding to the proleptic Gregorian ordinal, where January 1 of year 1 has ordinal 1.")
     public static org.python.Object fromordinal(org.python.Object ordinal) {
-        long year = 1;
-        long month = 1;
-        long day = 0;
-        long n = ((org.python.types.Int) ordinal).value;
-        long tmp = 1;
-        while (n > 0) {
-            if (year % 4 == 0 && !(year % 100 == 0 && year % 400 != 0)) {
-                if (tmp == 367) {
-                    year += 1;
-                    month = 1;
-                    day = 1;
-                    tmp = 2;
-                    n -= 1;
-                    continue;
-                }
-                if (tmp == 32 || tmp == 61 || tmp == 92 || tmp == 122 || tmp == 153 || tmp == 183 || tmp == 214 || tmp == 245 || tmp == 275 || tmp == 306 || tmp == 336) {
-                    month += 1;
-                    day = 1;
-                } else {
-                    day += 1;
-                }
+        if (ordinal instanceof org.python.types.Int && ((Int) ordinal).value > 0) {
+            long year = 1;
+            long month = 1;
+            long day = 0;
+            long n = ((org.python.types.Int) ordinal).value;
+            long tmp = 1;
+            while (n > 0) {
+                if (year % 4 == 0 && !(year % 100 == 0 && year % 400 != 0)) {
+                    if (tmp == 367) {
+                        year += 1;
+                        month = 1;
+                        day = 1;
+                        tmp = 2;
+                        n -= 1;
+                        continue;
+                    }
+                    if (tmp == 32 || tmp == 61 || tmp == 92 || tmp == 122 || tmp == 153 || tmp == 183 || tmp == 214 || tmp == 245 || tmp == 275 || tmp == 306 || tmp == 336) {
+                        month += 1;
+                        day = 1;
+                    } else {
+                        day += 1;
+                    }
 
-            } else {
-                if (tmp == 366) {
-                    year += 1;
-                    month = 1;
-                    day = 1;
-                    tmp = 2;
-                    n -= 1;
-                    continue;
-                }
-                if (tmp == 32 || tmp == 60 || tmp == 91 || tmp == 121 || tmp == 152 || tmp == 182 || tmp == 213 || tmp == 244 || tmp == 274 || tmp == 305 || tmp == 335) {
-                    month += 1;
-                    day = 1;
                 } else {
-                    day += 1;
+                    if (tmp == 366) {
+                        year += 1;
+                        month = 1;
+                        day = 1;
+                        tmp = 2;
+                        n -= 1;
+                        continue;
+                    }
+                    if (tmp == 32 || tmp == 60 || tmp == 91 || tmp == 121 || tmp == 152 || tmp == 182 || tmp == 213 || tmp == 244 || tmp == 274 || tmp == 305 || tmp == 335) {
+                        month += 1;
+                        day = 1;
+                    } else {
+                        day += 1;
+                    }
                 }
+                n -= 1;
+                tmp += 1;
             }
-            n -= 1;
-            tmp += 1;
-        }
 
-        org.python.types.Int n_Year = org.python.types.Int.getInt(year);
-        org.python.types.Int n_Month = org.python.types.Int.getInt(month);
-        org.python.types.Int n_Day = org.python.types.Int.getInt(day);
-        org.python.Object[] args = {n_Year, n_Month, n_Day};
-        return new DateTime(args, new HashMap<>());
+            if (year > 9999) {
+                throw new ValueError("year " + year + " is out of range");
+            }
+            org.python.types.Int n_Year = org.python.types.Int.getInt(year);
+            org.python.types.Int n_Month = org.python.types.Int.getInt(month);
+            org.python.types.Int n_Day = org.python.types.Int.getInt(day);
+            org.python.Object[] args = {n_Year, n_Month, n_Day};
+            return new DateTime(args, new HashMap<>());
+        } else if (ordinal instanceof org.python.types.Int) {
+            throw new ValueError("ordinal must be >=1");
+        } else {
+            if (ordinal instanceof org.python.types.Float) {
+                throw new TypeError("integer argument expected, got float");
+            } else {
+                throw new TypeError("an integer is required (got type " + ordinal.typeName() + ")");
+            }
+        }
     }
 
     @org.python.Method(__doc__ = "Return self < datetime.")

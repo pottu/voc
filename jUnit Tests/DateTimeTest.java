@@ -8,6 +8,7 @@ import org.python.exceptions.SyntaxError;
 
 import org.python.stdlib.datetime.Date;
 import org.python.stdlib.datetime.DateTime;
+import org.python.types.Float;
 import org.python.types.Int;
 import org.python.types.NotImplementedType;
 
@@ -377,12 +378,15 @@ public class DateTimeTest {
         assertThrows(ValueError.class,()-> DateTime.fromordinal(ordinal7).__str__());
 
         org.python.types.Str ordinal8 = new org.python.types.Str("hej");
-        assertThrows(ClassCastException.class,()-> DateTime.fromordinal(ordinal8).__str__());
+        assertThrows(TypeError.class,()-> DateTime.fromordinal(ordinal8).__str__());
+
+        org.python.types.Float ordinal9 = new Float(9.1);
+        assertThrows(TypeError.class,()-> DateTime.fromordinal(ordinal9).__str__());
     }
     @Test
     public void Test_fromordinal_ex(){
-        org.python.types.Str ordinal8 = new org.python.types.Str("hej");
-        assertThrows(ClassCastException.class,()-> DateTime.fromordinal(ordinal8).__str__());
+        org.python.types.List ordinal8 = new org.python.types.List();
+        assertThrows(TypeError.class,()-> DateTime.fromordinal(ordinal8).__str__());
     }
     @Test
     public void Test_Comparisons_LT() {
