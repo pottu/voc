@@ -157,14 +157,14 @@ public class DateTime extends org.python.types.Object {
         return new org.python.types.Str(returnStr);
     }
 
-    @org.python.Method(__doc__ = "date(year, month, day) --> date object")
+    @org.python.Method(__doc__ = "Return date object with same year, month and day.")
     public org.python.Object date() {
         org.python.Object[] args = {org.python.types.Int.getInt(this.timeUnits[YEAR_INDEX]), org.python.types.Int.getInt(this.timeUnits[MONTH_INDEX]),
             org.python.types.Int.getInt(this.timeUnits[DAY_INDEX])};
         return new Date(args, Collections.emptyMap());
     }
 
-    @org.python.Method(__doc__ = "Return the current local date.")
+    @org.python.Method(__doc__ = "Current date or datetime:  same as self.__class__.fromtimestamp(time.time()).")
     public static org.python.Object today() {
         java.time.LocalDateTime today = java.time.LocalDateTime.now();
         org.python.Object[] args = {org.python.types.Int.getInt(today.getYear()), org.python.types.Int.getInt(today.getMonth().getValue()),
@@ -174,37 +174,37 @@ public class DateTime extends org.python.types.Object {
     }
 
     @org.python.Method(__doc__ = "returns year")
-    public org.python.types.Int __year__() {
+    private org.python.types.Int __year__() {
         return org.python.types.Int.getInt(this.timeUnits[YEAR_INDEX]);
     }
 
     @org.python.Method(__doc__ = "returns month")
-    public org.python.types.Int __month__() {
+    private org.python.types.Int __month__() {
         return org.python.types.Int.getInt(this.timeUnits[MONTH_INDEX]);
     }
 
     @org.python.Method(__doc__ = "returns day")
-    public org.python.types.Int __day__() {
+    private org.python.types.Int __day__() {
         return org.python.types.Int.getInt(this.timeUnits[DAY_INDEX]);
     }
 
     @org.python.Method(__doc__ = "returns hour")
-    public org.python.types.Int __hour__() {
+    private org.python.types.Int __hour__() {
         return org.python.types.Int.getInt(this.timeUnits[HOUR_INDEX]);
     }
 
     @org.python.Method(__doc__ = "returns minute")
-    public org.python.types.Int __minute__() {
+    private org.python.types.Int __minute__() {
         return org.python.types.Int.getInt(this.timeUnits[MINUTE_INDEX]);
     }
 
     @org.python.Method(__doc__ = "returns second")
-    public org.python.types.Int __second__() {
+    private org.python.types.Int __second__() {
         return org.python.types.Int.getInt(this.timeUnits[SECOND_INDEX]);
     }
 
     @org.python.Method(__doc__ = "returns microsecond")
-    public org.python.types.Int __microsecond__() {
+    private org.python.types.Int __microsecond__() {
         return org.python.types.Int.getInt(this.timeUnits[MICROSECOND_INDEX]);
     }
 
@@ -232,7 +232,7 @@ public class DateTime extends org.python.types.Object {
         return new DateTime(args, Collections.emptyMap());
     }
 
-    @org.python.Method(__doc__ = "Return the day of the week as an integer, where Monday is 0 and Sunday is 6.")
+    @org.python.Method(__doc__ = "Return the day of the week represented by the date.\nMonday == 0 ... Sunday == 6")
     public org.python.Object weekday() {
         double y = ((org.python.types.Int) this.year).value;
         double m = ((org.python.types.Int) this.month).value;
@@ -246,7 +246,7 @@ public class DateTime extends org.python.types.Object {
         return org.python.types.Int.getInt(convertToPython[day - 1]);
     }
 
-    @org.python.Method(__doc__ = "Return the day of the week as an integer, where Monday is 1 and Sunday is 7.")
+    @org.python.Method(__doc__ = "Return the day of the week represented by the date.\nMonday == 1 ... Sunday == 7")
     public org.python.Object isoweekday() {
         double y = ((org.python.types.Int) this.year).value;
         double m = ((org.python.types.Int) this.month).value;
@@ -260,7 +260,7 @@ public class DateTime extends org.python.types.Object {
         return org.python.types.Int.getInt(convertToPython[day - 1]);
     }
 
-    @org.python.Method(__doc__ = "Return the datetime corresponding to the proleptic Gregorian ordinal, where January 1 of year 1 has ordinal 1.")
+    @org.python.Method(__doc__ = "int -> date corresponding to a proleptic Gregorian ordinal.")
     public static org.python.Object fromordinal(org.python.Object ordinal) {
         if (ordinal instanceof org.python.types.Int && ((Int) ordinal).value > 0) {
             long year = 1;
@@ -324,7 +324,7 @@ public class DateTime extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "Return self < datetime.")
+    @org.python.Method(__doc__ = "Return self<value.")
     public org.python.Object __lt__(org.python.Object datetime) {
         if (datetime instanceof DateTime) {
             boolean res = this._lt((DateTime) datetime);
@@ -334,7 +334,7 @@ public class DateTime extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "Return self <= datetime.")
+    @org.python.Method(__doc__ = "Return self<=value.")
     public org.python.Object __le__(org.python.Object datetime) {
         if (datetime instanceof DateTime) {
             boolean res = this._lt((DateTime) datetime) || this._eq((DateTime) datetime);
@@ -344,7 +344,7 @@ public class DateTime extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "Return self == datetime.")
+    @org.python.Method(__doc__ = "Return self==value.")
     public org.python.Object __eq__(org.python.Object datetime) {
         if (datetime instanceof DateTime) {
             boolean res = this._eq((DateTime) datetime);
@@ -354,7 +354,7 @@ public class DateTime extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "Return self != datetime.")
+    @org.python.Method(__doc__ = "Return self!=value.")
     public org.python.Object __ne__(org.python.Object datetime) {
         if (datetime instanceof DateTime) {
             boolean res = !(this._eq((DateTime) datetime));
@@ -364,7 +364,7 @@ public class DateTime extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "Return self >= datetime.")
+    @org.python.Method(__doc__ = "Return self>=value.")
     public org.python.Object __ge__(org.python.Object datetime) {
         if (datetime instanceof DateTime) {
             boolean res = !(this._lt((DateTime) datetime));
@@ -374,7 +374,7 @@ public class DateTime extends org.python.types.Object {
         }
     }
 
-    @org.python.Method(__doc__ = "Return self > datetime.")
+    @org.python.Method(__doc__ = "Return self>value.")
     public org.python.Object __gt__(org.python.Object datetime) {
         if (datetime instanceof DateTime) {
             boolean res = !(this._lt((DateTime) datetime)) && !(this._eq((DateTime) datetime));

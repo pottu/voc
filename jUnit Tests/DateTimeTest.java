@@ -292,6 +292,11 @@ public class DateTimeTest {
         org.python.Object[] args = {year, month,day};
         DateTime d = new DateTime(args,new HashMap<>());
         assertDoesNotThrow(()->d.today());
+        DateTime today = (DateTime) d.today();
+        java.time.LocalDateTime expected = java.time.LocalDateTime.now();
+        assertEquals(expected.getYear(),((org.python.types.Int)today.year).value);
+        assertEquals(expected.getMonthValue(),((org.python.types.Int)today.month).value);
+        assertEquals(expected.getDayOfMonth(),((org.python.types.Int)today.day).value);
     }
     @Test
     public void Test_Weekday() {
