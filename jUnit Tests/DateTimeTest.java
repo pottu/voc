@@ -393,7 +393,7 @@ public class DateTimeTest {
         org.python.types.Int day = org.python.types.Int.getInt(1);
         org.python.Object[] args = {year, month,day};
         DateTime d = new DateTime(args,new HashMap<>());
-        assertEquals(d.__str__(),DateTime.__min__().__str__());
+        assertEquals(d.__str__(),DateTime.min.__str__());
     }
     @Test
     public void Test_Max(){
@@ -406,7 +406,7 @@ public class DateTimeTest {
         org.python.types.Int microsecond = org.python.types.Int.getInt(999999);
         org.python.Object[] args = {year, month, day, hour, minute, second, microsecond};
         DateTime d = new DateTime(args,new HashMap<>());
-        assertEquals(d.__str__(),DateTime.__max__().__str__());
+        assertEquals(d.__str__(),DateTime.max.__str__());
     }
     @Test
     public void Test_Comparisons_LT() {

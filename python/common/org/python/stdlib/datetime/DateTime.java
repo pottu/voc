@@ -209,7 +209,7 @@ public class DateTime extends org.python.types.Object {
     }
 
     @org.python.Method(__doc__ = "")
-    public static org.python.Object __min__() {
+    private static org.python.Object __min__() {
         org.python.types.Int year = org.python.types.Int.getInt(1);
         org.python.types.Int month = org.python.types.Int.getInt(1);
         org.python.types.Int day = org.python.types.Int.getInt(1);
@@ -219,7 +219,7 @@ public class DateTime extends org.python.types.Object {
     }
 
     @org.python.Method(__doc__ = "")
-    public static org.python.Object __max__() {
+    private static org.python.Object __max__() {
         org.python.types.Int year = org.python.types.Int.getInt(9999);
         org.python.types.Int month = org.python.types.Int.getInt(12);
         org.python.types.Int day = org.python.types.Int.getInt(31);
