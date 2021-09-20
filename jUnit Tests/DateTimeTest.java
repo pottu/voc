@@ -382,11 +382,31 @@ public class DateTimeTest {
 
         org.python.types.Float ordinal9 = new Float(9.1);
         assertThrows(TypeError.class,()-> DateTime.fromordinal(ordinal9).__str__());
+
+        org.python.types.List ordinal10 = new org.python.types.List();
+        assertThrows(TypeError.class,()-> DateTime.fromordinal(ordinal10).__str__());
     }
     @Test
-    public void Test_fromordinal_ex(){
-        org.python.types.List ordinal8 = new org.python.types.List();
-        assertThrows(TypeError.class,()-> DateTime.fromordinal(ordinal8).__str__());
+    public void Test_Min(){
+        org.python.types.Int year = org.python.types.Int.getInt(1);
+        org.python.types.Int month = org.python.types.Int.getInt(1);
+        org.python.types.Int day = org.python.types.Int.getInt(1);
+        org.python.Object[] args = {year, month,day};
+        DateTime d = new DateTime(args,new HashMap<>());
+        assertEquals(d.__str__(),DateTime.__min__().__str__());
+    }
+    @Test
+    public void Test_Max(){
+        org.python.types.Int year = org.python.types.Int.getInt(9999);
+        org.python.types.Int month = org.python.types.Int.getInt(12);
+        org.python.types.Int day = org.python.types.Int.getInt(31);
+        org.python.types.Int hour = org.python.types.Int.getInt(23);
+        org.python.types.Int minute = org.python.types.Int.getInt(59);
+        org.python.types.Int second = org.python.types.Int.getInt(59);
+        org.python.types.Int microsecond = org.python.types.Int.getInt(999999);
+        org.python.Object[] args = {year, month, day, hour, minute, second, microsecond};
+        DateTime d = new DateTime(args,new HashMap<>());
+        assertEquals(d.__str__(),DateTime.__max__().__str__());
     }
     @Test
     public void Test_Comparisons_LT() {
