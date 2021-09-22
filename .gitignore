@@ -23,3 +23,5 @@ tests/tmp*
 .idea/
 .vscode
 /env
+/out
+*.iml
