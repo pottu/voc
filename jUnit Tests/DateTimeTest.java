@@ -274,7 +274,7 @@ public class DateTimeTest {
         assertEquals("0010-10-10 01:01:01.999999",d1.__str__().value);
     }
 
-    /* @Test Does not work ATM, NEED DATE IMPLEMENTATION
+    @Test
     public void Test_Date() {
         org.python.types.Int year = org.python.types.Int.getInt(10);
         org.python.types.Int month = org.python.types.Int.getInt(10);
@@ -282,7 +282,7 @@ public class DateTimeTest {
         org.python.Object[] args = {year, month,day};
         DateTime d = new DateTime(args,new HashMap<>());
         assertDoesNotThrow(()-> (Date) d.date());
-    }*/
+    }
 
     @Test
     public void Test_Today() {
