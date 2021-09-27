@@ -1,4 +1,4 @@
-package voc;
+/*package voc;
 
 import org.junit.Test;
 import org.python.exceptions.AttributeError;
@@ -474,4 +474,4 @@ public class DictTest {
 	org.python.Object[] args2 = { arg };
 	Dict dict = new Dict(args2, kwargs);
     }
-}
+}*/
