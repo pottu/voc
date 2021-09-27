@@ -1,17 +1,21 @@
-package voc;
+//package voc;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import org.python.stdlib.datetime.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class ListTest {
     /**
@@ -32,15 +36,12 @@ public class ListTest {
 
     private org.python.types.List list;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
-
-    @org.junit.Before
+    @BeforeEach
     public void setUp() {
 	this.list = new org.python.types.List();
     }
 
-    @org.junit.After
+    @AfterEach
     public void tearDown() {
 	this.list = null;
     }
@@ -52,9 +53,8 @@ public class ListTest {
 
     @Test
     public void test__hash__() {
-	exceptionRule.expect(org.python.exceptions.AttributeError.class);
-	exceptionRule.expectMessage("'list' object has no attribute '__hash__'");
-	list.__hash__();
+        Exception exception = assertThrows(org.python.exceptions.AttributeError.class, () -> list.__hash__());
+        assertEquals("'list' object has no attribute '__hash__'", exception.getMessage());
     }
 
     @Test
@@ -822,9 +822,8 @@ public class ListTest {
 
     @Test
     public void test__format__() {
-	exceptionRule.expect(org.python.exceptions.NotImplementedError.class);
-	exceptionRule.expectMessage("list.__format__() has not been implemented.");
-	list.__format__();
+        Exception exception = assertThrows(org.python.exceptions.NotImplementedError.class, () -> list.__format__());
+        assertEquals("list.__format__() has not been implemented.", exception.getMessage());
     }
 
     @Test
@@ -857,14 +856,12 @@ public class ListTest {
     public void testListConstructorMultipleArguments() {
 	// Check with two arguments where first argument is non-null
 	if (org.Python.VERSION < 0x03070000) {
-	    exceptionRule.expect(org.python.exceptions.TypeError.class);
-	    exceptionRule.expectMessage("list() takes at most 1 argument (2 given)");
+        Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> new org.python.types.List(new org.python.Object[] { new org.python.types.List(), null }, null));
+        assertEquals("list() takes at most 1 argument (2 given)", exception.getMessage());
 	} else {
-	    exceptionRule.expect(org.python.exceptions.TypeError.class);
-	    exceptionRule.expectMessage("list expected takes at most 1 arguments, got 2");
+        Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> list.__hash__());
+        assertEquals("list expected takes at most 1 arguments, got 2", exception.getMessage());
 	}
-
-	org.python.Object foo = new org.python.types.List(new org.python.Object[] { new org.python.types.List(), null }, null);
     }
 
     @Test
@@ -946,9 +943,9 @@ public class ListTest {
     public void testList__rmul__() {
 	org.python.types.List list;
 	list = py_list_from_java_ints(1);
-	exceptionRule.expect(org.python.exceptions.NotImplementedError.class);
-	exceptionRule.expectMessage("list.__rmul__() has not been implemented.");
-	list.__rmul__(list);
+
+    Exception exception = assertThrows(org.python.exceptions.NotImplementedError.class, () -> list.__rmul__(list));
+    assertEquals("list.__rmul__() has not been implemented.", exception.getMessage());
     }
 
     @Test
@@ -1005,9 +1002,9 @@ public class ListTest {
     public void testList__imul__float() {
 	org.python.types.List java_list = py_list_from_java_ints(1);
 	org.python.types.Float the_float = new org.python.types.Float(0.1);
-	exceptionRule.expect(org.python.exceptions.TypeError.class);
-	exceptionRule.expectMessage("can't multiply sequence by non-int of type 'float'");
-	java_list.__imul__(the_float);
+
+    Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> java_list.__imul__(the_float));
+    assertEquals("can't multiply sequence by non-int of type 'float'", exception.getMessage());
     }
 
     @Test
@@ -1051,9 +1048,9 @@ public class ListTest {
     public void testList_extend_float() {
 	org.python.types.List java_list = py_list_from_java_ints(1);
 	org.python.types.Float a_float = new org.python.types.Float(0.1);
-	exceptionRule.expect(org.python.exceptions.TypeError.class);
-	exceptionRule.expectMessage("'float' object is not iterable");
-	java_list.extend(a_float);
+
+    Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> java_list.extend(a_float));
+    assertEquals("'float' object is not iterable", exception.getMessage());
     }
 
     @Test
@@ -1086,9 +1083,9 @@ public class ListTest {
     public void testList_insert_float_index() {
 	org.python.types.List java_list = py_list_from_java_ints();
 	org.python.types.Float a_float_index = new org.python.types.Float(0.1);
-	exceptionRule.expect(org.python.exceptions.TypeError.class);
-	exceptionRule.expectMessage("'float' object cannot be interpreted as an integer"); // python 3.5
-	java_list.insert(a_float_index, org.python.types.Int.getInt(1));
+
+    Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> java_list.insert(a_float_index, org.python.types.Int.getInt(1)));
+    assertEquals("'float' object cannot be interpreted as an integer", exception.getMessage());
     }
 
     @Test
@@ -1122,17 +1119,17 @@ public class ListTest {
     @Test
     public void testList_pop_from_empty() {
 	org.python.types.List java_list = py_list_from_java_ints();
-	exceptionRule.expect(org.python.exceptions.IndexError.class);
-	exceptionRule.expectMessage("pop from empty list"); // python 3.5
-	java_list.pop(null);
+
+    Exception exception = assertThrows(org.python.exceptions.IndexError.class, () -> java_list.pop(null));
+    assertEquals("pop from empty list", exception.getMessage());
     }
 
     @Test
     public void testList_pop_with_index_out_of_range() {
 	org.python.types.List java_list = py_list_from_java_ints(1, 2);
-	exceptionRule.expect(org.python.exceptions.IndexError.class);
-	exceptionRule.expectMessage("pop index out of range"); // python 3.5
-	java_list.pop(org.python.types.Int.getInt(2));
+
+    Exception exception = assertThrows(org.python.exceptions.IndexError.class, () -> java_list.pop(org.python.types.Int.getInt(2)));
+    assertEquals("pop index out of range", exception.getMessage());
     }
 
     @Test
@@ -1145,9 +1142,9 @@ public class ListTest {
     @Test
     public void testList_remove_with_not_found_value() {
 	org.python.types.List java_list = py_list_from_java_ints(3, 4);
-	exceptionRule.expect(org.python.exceptions.ValueError.class);
-	exceptionRule.expectMessage("list.remove(x): x not in list");
-	java_list.remove(org.python.types.Int.getInt(1));
+
+    Exception exception = assertThrows(org.python.exceptions.ValueError.class, () -> java_list.remove(org.python.types.Int.getInt(1)));
+    assertEquals("list.remove(x): x not in list", exception.getMessage());
     }
 
     @Test
@@ -1216,18 +1213,18 @@ public class ListTest {
     public void test__getitem__OutOfRange() {
 	org.python.types.List java_list;
 	java_list = py_list_from_java_ints(10, 20);
-	exceptionRule.expect(org.python.exceptions.IndexError.class);
-	exceptionRule.expectMessage("list index out of range");
-	java_list.__getitem__(org.python.types.Int.getInt(3));
+
+    Exception exception = assertThrows(org.python.exceptions.IndexError.class, () -> java_list.__getitem__(org.python.types.Int.getInt(3)));
+    assertEquals("list index out of range", exception.getMessage());
     }
 
     @Test
     public void test__getitem__NegativeOutOfRange() {
 	org.python.types.List java_list;
 	java_list = py_list_from_java_ints(10, 20);
-	exceptionRule.expect(org.python.exceptions.IndexError.class);
-	exceptionRule.expectMessage("list index out of range");
-	java_list.__getitem__(org.python.types.Int.getInt(-3));
+
+    Exception exception = assertThrows(org.python.exceptions.IndexError.class, () -> java_list.__getitem__(org.python.types.Int.getInt(-3)));
+    assertEquals("list index out of range", exception.getMessage());
     }
 
     @Test
@@ -1242,18 +1239,18 @@ public class ListTest {
     public void test__setitem__ListEmptyError() {
 	org.python.types.List java_list;
 	java_list = py_list_from_java_ints();
-	exceptionRule.expect(org.python.exceptions.IndexError.class);
-	exceptionRule.expectMessage("list assignment index out of range");
-	java_list.__setitem__((org.python.types.Int.getInt(0)), org.python.types.Int.getInt(900));
+
+    Exception exception = assertThrows(org.python.exceptions.IndexError.class, () -> java_list.__setitem__((org.python.types.Int.getInt(0)), org.python.types.Int.getInt(900)));
+    assertEquals("list assignment index out of range", exception.getMessage());
     }
 
     @Test
     public void test__setitem__NegativeListEmptyError() {
 	org.python.types.List java_list;
 	java_list = py_list_from_java_ints();
-	exceptionRule.expect(org.python.exceptions.IndexError.class);
-	exceptionRule.expectMessage("list assignment index out of range");
-	java_list.__setitem__((org.python.types.Int.getInt(-2)), org.python.types.Int.getInt(900));
+
+    Exception exception = assertThrows(org.python.exceptions.IndexError.class, () -> java_list.__setitem__((org.python.types.Int.getInt(-2)), org.python.types.Int.getInt(900)));
+    assertEquals("list assignment index out of range", exception.getMessage());
     }
 
     @Test
@@ -1348,9 +1345,9 @@ public class ListTest {
     @Test
     public void test__round__() {
 	org.python.types.List java_list = py_list_from_java_ints();
-	exceptionRule.expect(org.python.exceptions.TypeError.class);
-	exceptionRule.expectMessage("type list doesn't define __round__ method");
-	java_list.__round__(org.python.types.Int.getInt(3));
+
+    Exception exception = assertThrows(org.python.exceptions.TypeError.class, () -> java_list.__round__(org.python.types.Int.getInt(3)));
+    assertEquals("type list doesn't define __round__ method", exception.getMessage());
     }
 
     @Test
