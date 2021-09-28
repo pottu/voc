@@ -10,11 +10,11 @@ public class Workload {
         List l = new List();
 
         for (int i = 0; i < NUM_ELEMENTS; i++) {
-            int rand = (int)(Math.random() * 100 + 1);
+            int rand = (int) (Math.random() * 100 + 1);
             l.insert(org.python.types.Int.getInt(0), org.python.types.Int.getInt(rand));
         }
 
-        l.sort(null,null);
+        l.sort(null, null);
 
         for (int i = 0; i < NUM_ELEMENTS; i++) {
             l.pop(org.python.types.Int.getInt(0));
