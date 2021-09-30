@@ -23,7 +23,7 @@ public class Dict extends org.python.types.Object {
 
     public Dict() {
         super();
-        this.value = new java.util.HashMap<org.python.Object, org.python.Object>();
+        this.value = new java.util.TreeMap<org.python.Object, org.python.Object>();
     }
 
     public Dict(java.util.Map<org.python.Object, org.python.Object> dict) {
@@ -44,15 +44,15 @@ public class Dict extends org.python.types.Object {
     )
     public Dict(org.python.Object[] args, java.util.Map<java.lang.String, org.python.Object> kwargs) {
         if (args[0] == null) {
-            this.value = new java.util.HashMap<org.python.Object, org.python.Object>();
+            this.value = new java.util.TreeMap<org.python.Object, org.python.Object>();
         } else {
             if (args[0] instanceof org.python.types.Dict) {
-                this.value = new java.util.HashMap<org.python.Object, org.python.Object>(
+                this.value = new java.util.TreeMap<org.python.Object, org.python.Object>(
                         ((org.python.types.Dict) args[0]).value
                 );
             } else {
                 org.python.Object iterator = org.Python.iter(args[0]);
-                java.util.Map<org.python.Object, org.python.Object> generated = new java.util.HashMap<org.python.Object, org.python.Object>();
+                java.util.Map<org.python.Object, org.python.Object> generated = new java.util.TreeMap<org.python.Object, org.python.Object>();
                 try {
                     while (true) {
                         org.python.Object next = iterator.__next__();
@@ -308,7 +308,7 @@ public class Dict extends org.python.types.Object {
             __doc__ = "D.copy() -> dict -- a shallow copy of D"
     )
     public org.python.Object copy() {
-        return new org.python.types.Dict(new java.util.HashMap<org.python.Object, org.python.Object>(this.value));
+        return new org.python.types.Dict(new java.util.TreeMap<org.python.Object, org.python.Object>(this.value));
     }
 
     @org.python.Method(
