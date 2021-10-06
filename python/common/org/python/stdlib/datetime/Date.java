@@ -1,16 +1,17 @@
 package org.python.stdlib.datetime;
 
+import java.lang.reflect.Field;
 import java.util.Collections;
 
 public class Date extends org.python.types.Object {
 
-    @org.python.Attribute
+    @org.python.Attribute(readonly = true)
     public org.python.Object year = __year__();
 
-    @org.python.Attribute
+    @org.python.Attribute(readonly = true)
     public org.python.Object month = __month__();
 
-    @org.python.Attribute
+    @org.python.Attribute(readonly = true)
     public org.python.Object day = __day__();
 
     @org.python.Attribute
@@ -166,6 +167,23 @@ public class Date extends org.python.types.Object {
             throw new org.python.exceptions.TypeError("function missing required argument 'year' (pos 1)");
         }
 
+    }
+
+    @org.python.Method(__doc__ = "Implement setattr(self, name, value).")
+    public void __setattr__(java.lang.String name, org.python.Object value) {
+        try {
+            //Method m = this.getClass().getMethod(name, null);
+            Field f = this.getClass().getField(name);
+            org.python.Attribute a = f.getAnnotation(org.python.Attribute.class);
+            if (a.readonly()) {
+                throw new org.python.exceptions.AttributeError("attribute '" + name + "' of 'datetime.date' objects is not writable");
+            } else {
+                f.set(this, value);
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new org.python.exceptions.AttributeError("'datetime.date' object has no attribute '" + name + "'");
+            //throw new org.python.exceptions.AttributeError(e.toString());
+        }
     }
 
     @org.python.Method(__doc__ = "Return repr(self).")
