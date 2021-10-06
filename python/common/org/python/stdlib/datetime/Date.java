@@ -168,6 +168,17 @@ public class Date extends org.python.types.Object {
 
     }
 
+    @org.python.Method(__doc__ = "Implement setattr(self, name, value).")
+    public void __setattr__(java.lang.String name, org.python.Object value) {
+        if (name == "year" || name == "month" || name == "day") {
+            throw new org.python.exceptions.AttributeError("attribute '" + name + "' of 'datetime.date' objects is not writable");
+        } else {
+            throw new org.python.exceptions.AttributeError("'datetime.date' object has no attribute '" + name + "'");
+        }
+    }
+
+
+
     @org.python.Method(__doc__ = "Return repr(self).")
     public org.python.types.Str __repr__() {
 
