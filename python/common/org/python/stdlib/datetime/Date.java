@@ -172,7 +172,6 @@ public class Date extends org.python.types.Object {
     @org.python.Method(__doc__ = "Implement setattr(self, name, value).")
     public void __setattr__(java.lang.String name, org.python.Object value) {
         try {
-            //Method m = this.getClass().getMethod(name, null);
             Field f = this.getClass().getField(name);
             org.python.Attribute a = f.getAnnotation(org.python.Attribute.class);
             if (a.readonly()) {
@@ -182,7 +181,6 @@ public class Date extends org.python.types.Object {
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new org.python.exceptions.AttributeError("'datetime.date' object has no attribute '" + name + "'");
-            //throw new org.python.exceptions.AttributeError(e.toString());
         }
     }
 
