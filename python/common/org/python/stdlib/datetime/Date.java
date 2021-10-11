@@ -168,7 +168,10 @@ public class Date extends org.python.types.Object {
 
     }
 
-    @org.python.Method(__doc__ = "Implement setattr(self, name, value).")
+    @org.python.Method(
+            __doc__ = "Implement setattr(self, name, value).",
+            args = {"name", "value"}
+    )
     public void __setattr__(java.lang.String name, org.python.Object value) {
         if (name == "year" || name == "month" || name == "day") {
             throw new org.python.exceptions.AttributeError("attribute '" + name + "' of 'datetime.date' objects is not writable");
