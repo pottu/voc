@@ -169,7 +169,10 @@ public class Date extends org.python.types.Object {
 
     }
 
-    @org.python.Method(__doc__ = "Implement setattr(self, name, value).")
+    @org.python.Method(
+            __doc__ = "Implement setattr(self, name, value).",
+            args = {"name", "value"}
+    )
     public void __setattr__(java.lang.String name, org.python.Object value) {
         try {
             Field f = this.getClass().getField(name);
